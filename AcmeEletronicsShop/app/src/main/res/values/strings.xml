@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Acme Eletronics Shop</string>
+
+    <string name="hint_name">Name</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_fiscal_number">Fiscal Number</string>
+    <string name="hint_credit_card_type">Type</string>
+    <string name="hint_credit_card_number">Number</string>
+    <string name="hint_credit_card_validity">Validity</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+
+    <string name="text_login">Login</string>
+    <string name="text_register">Register</string>
+    <string name="text_personal_info">Personal Information</string>
+    <string name="text_validation_credentials">Validation Credentials</string>
+    <string name="text_credit_card_info">Credit Card Information</string>
+
+    <string name="error_message_name">Enter Full Name</string>
+    <string name="error_message_email">Enter Valid Email</string>
+    <string name="error_message_password">Enter Password</string>
+    <string name="error_email_exists">Email Already Exists</string>
+    <string name="error_password_match">Password Does Not Match</string>
+    <string name="error_valid_email_password">Wrong Email or Password</string>
+    <string name="error_message_fiscal_number">Enter Valid Fiscal Number</string>
+
+    <string name="success_message">Registration Successful</string>
+    <string name="text_not_member">No account yet? Create one</string>
+    <string name="text_already_member">Already a member? Login</string>
+
 </resources>
