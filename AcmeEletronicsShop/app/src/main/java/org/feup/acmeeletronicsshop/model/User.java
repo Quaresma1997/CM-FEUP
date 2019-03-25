@@ -11,19 +11,27 @@ public class User {
     private String publicKey;
     private String privateKey;
 
-    public User(){
+
+    private int cardNumber;
+    private String cardType;
+    private String cardValidity;
+
+    public User() {
 
     }
 
-    public User(String publicKey, String privateKey, int id, String name, String address, String email, String password, String fiscalNumber) {
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
+    public User(int id, String name, String address, String email, String password, String fiscalNumber, String publicKey, String privateKey, int cardNumber, String cardType, String cardValidity) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;
         this.password = password;
         this.fiscalNumber = fiscalNumber;
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.cardNumber = cardNumber;
+        this.cardType = cardType;
+        this.cardValidity = cardValidity;
     }
 
 
@@ -89,6 +97,30 @@ public class User {
 
     public void setPrivateKey(String privateKey) {
         this.privateKey = privateKey;
+    }
+
+    public int getCardNumber() {
+        return cardNumber;
+    }
+
+    public void setCardNumber(int cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
+    }
+
+    public String getCardValidity() {
+        return cardValidity;
+    }
+
+    public void setCardValidity(String cardValidity) {
+        this.cardValidity = cardValidity;
     }
 
 

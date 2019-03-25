@@ -4,9 +4,9 @@
     <string name="hint_name">Name</string>
     <string name="hint_address">Address</string>
     <string name="hint_fiscal_number">Fiscal Number</string>
-    <string name="hint_credit_card_type">Type</string>
-    <string name="hint_credit_card_number">Number</string>
-    <string name="hint_credit_card_validity">Validity</string>
+    <string name="hint_credit_card_type">Credit Card Type</string>
+    <string name="hint_credit_card_number">Credit Card Number</string>
+    <string name="hint_credit_card_validity">Credit Card Validity (mm/yy)</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
@@ -17,6 +17,9 @@
     <string name="text_validation_credentials">Validation Credentials</string>
     <string name="text_credit_card_info">Credit Card Information</string>
 
+    <string name="credit_card_type_visa">Visa</string>
+    <string name="credit_card_type_master_card">Master Card</string>
+
     <string name="error_message_name">Enter Full Name</string>
     <string name="error_message_email">Enter Valid Email</string>
     <string name="error_message_password">Enter Password</string>
@@ -26,7 +29,23 @@
     <string name="error_message_fiscal_number">Enter Valid Fiscal Number</string>
 
     <string name="success_message">Registration Successful</string>
-    <string name="text_not_member">No account yet? Create one</string>
-    <string name="text_already_member">Already a member? Login</string>
+    <string name="text_not_member">No account yet? <u>Create one</u></string>
+    <string name="text_already_member">Already a member? <u>Login</u></string>
+    <string name="action_settings">Settings</string>
+
+    <string name="text_added_products">Added products</string>
+    <string name="text_shopping_list">Shopping List</string>
+
+    <string name="hint_name_product">Name</string>
+    <string name="hint_price_product">Price</string>
+    <string name="hint_quantity_product_label">Quantity</string>
+    <string name="hint_quantity_product">Qtty</string>
+
+    <string name="text_total">Total: </string>
+    <string name="hint_total">0 €</string>
+    <string name="text_pay">PAY</string>
+    <string name="text_clear">CLEAR</string>
+
+
 
 </resources>
