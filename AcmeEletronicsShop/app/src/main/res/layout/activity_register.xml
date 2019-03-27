@@ -126,7 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/text_credit_card_info"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutCreditCardNumber"

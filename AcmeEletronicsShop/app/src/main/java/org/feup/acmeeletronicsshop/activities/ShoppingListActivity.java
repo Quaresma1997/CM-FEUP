@@ -6,8 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
@@ -41,6 +45,10 @@ public class ShoppingListActivity extends AppCompatActivity {
     private void initViews() {
         textViewName = (AppCompatTextView) findViewById(R.id.textViewName);
         recyclerViewProducts = (RecyclerView) findViewById(R.id.recyclerViewProducts);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewProducts.getContext(),
+                DividerItemDecoration.VERTICAL);
+        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
+        recyclerViewProducts.addItemDecoration(dividerItemDecoration);
     }
 
     /**
@@ -87,5 +95,23 @@ public class ShoppingListActivity extends AppCompatActivity {
 //        }.execute();
 
 
+    }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.btnAdd) {
+            Log.d("AAAAAAAA", "BBBBBBB");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

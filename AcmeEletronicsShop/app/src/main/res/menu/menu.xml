@@ -2,8 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/mybutton"
-        android:title="Add"
+        android:id="@+id/btnAdd"
+        android:title=""
+        android:theme="@style/myActionButtonStyle"
         app:showAsAction="always"
         android:icon="@drawable/barcode_icon"
         />
