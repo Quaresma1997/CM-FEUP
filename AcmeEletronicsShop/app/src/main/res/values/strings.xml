@@ -46,6 +46,8 @@
     <string name="text_pay">PAY</string>
     <string name="text_clear">CLEAR</string>
 
+    <string name="navigation_drawer_open">Open drawer</string>
+    <string name="navigation_drawer_close">Close drawer</string>
 
 
 </resources>
