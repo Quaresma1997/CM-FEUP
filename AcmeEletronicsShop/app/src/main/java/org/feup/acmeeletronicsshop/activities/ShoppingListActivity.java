@@ -1,5 +1,6 @@
 package org.feup.acmeeletronicsshop.activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
@@ -44,6 +47,14 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+
+        Button b = findViewById(R.id.btnPay);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShoppingListActivity.this,PayPopup.class));
+            }
+        });
 
         initViews();
         initObjects();
