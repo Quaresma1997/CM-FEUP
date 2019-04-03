@@ -24,6 +24,8 @@
         <activity
             android:name=".activities.ShoppingListActivity"
             android:screenOrientation="portrait" />
+        
+        <activity android:name=".activities.PayPopup" />
     </application>
 
 </manifest>
