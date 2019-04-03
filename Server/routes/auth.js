@@ -88,7 +88,7 @@ router.post("/register", (req, res, next) => {
 
     db.serialize(() => {
         var sql = 'INSERT INTO User (name, email, address, password, fiscalNumber, publicKey) VALUES (?,?,?,?,?,?)'
-        var params = [data.name, data.email, data.password, data.address, data.fiscalNumber, data.publicKey]
+        var params = [data.name, data.email, data.address, data.password, data.fiscalNumber, data.publicKey]
         db.run(sql, params, function (err, result) {
 
             if (err) {

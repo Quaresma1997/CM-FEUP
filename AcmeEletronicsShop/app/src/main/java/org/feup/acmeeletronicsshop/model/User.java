@@ -1,5 +1,13 @@
 package org.feup.acmeeletronicsshop.model;
 
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class User {
 
     private int id;
@@ -12,7 +20,7 @@ public class User {
     private String privateKey;
 
 
-    private int cardNumber;
+    private String cardNumber;
     private String cardType;
     private String cardValidity;
 
@@ -20,8 +28,7 @@ public class User {
 
     }
 
-    public User(int id, String name, String address, String email, String password, String fiscalNumber, String publicKey, String privateKey, int cardNumber, String cardType, String cardValidity) {
-        this.id = id;
+    public User(String name, String address, String email, String password, String fiscalNumber, String publicKey, String privateKey, String cardNumber, String cardType, String cardValidity) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -99,11 +106,11 @@ public class User {
         this.privateKey = privateKey;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 
@@ -123,5 +130,41 @@ public class User {
         this.cardValidity = cardValidity;
     }
 
+    public void saveObject(File f){
+        try
+        {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(f + "/save_object.bin"))); //Select where you wish to save the file...
+            oos.writeObject(this); // write the class as an 'object'
+            oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin'
+            oos.close();// close the stream
+        }
+        catch(Exception ex)
+        {
+            Log.v("Serialization Save Err", ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
 
+    public void loadSerializedObject(File f)
+    {
+        try
+        {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(f + "/save_object.bin")));
+            Object o = ois.readObject();
+            this.address = ((User) o).address;
+            this.name = ((User) o).name;
+            this.email = ((User) o).email;
+            this.fiscalNumber = ((User) o).fiscalNumber;
+            this.cardType = ((User) o).cardType;
+            this.cardNumber = ((User) o).cardNumber;
+            this.cardValidity = ((User) o).cardValidity;
+            this.publicKey = ((User) o).publicKey;
+            this.privateKey = ((User) o).privateKey;
+        }
+        catch(Exception ex)
+        {
+            Log.v("Serialization Read Err",ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
 }

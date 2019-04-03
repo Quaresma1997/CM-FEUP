@@ -11,9 +11,11 @@ var HTTP_PORT = 8000
 
 var auth = require('./routes/auth');
 var shoppingList = require('./routes/shoppingList');
+var product = require('./routes/product');
 
 app.use('/', auth);
 app.use('/shoppingList', shoppingList);
+app.use('/products', product);
 
 // Start server
 app.listen(HTTP_PORT, () => {
@@ -115,3 +117,4 @@ app.get("/", (req, res, next) => {
     res.json({"message":"Ok"})
 });
 
+app.disable('etag');
