@@ -20,12 +20,17 @@
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".activities.ShoppingListActivity"
             android:screenOrientation="portrait" />
         
         <activity android:name=".activities.PayPopup" />
+        <activity android:name=".activities.ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OrderHistoryActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

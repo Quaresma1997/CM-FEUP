@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingListActivity extends AppCompatActivity {
+public class ShoppingListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private AppCompatActivity activity = ShoppingListActivity.this;
     private AppCompatTextView textViewName;
     private RecyclerView recyclerViewProducts;
@@ -67,6 +68,10 @@ public class ShoppingListActivity extends AppCompatActivity {
                 startActivity(new Intent(ShoppingListActivity.this,PayPopup.class));
             }
         });
+
+        NavigationView navView = findViewById(R.id.nav_view);
+        navView.bringToFront();
+        navView.setNavigationItemSelectedListener(this);
 
         initViews();
         initObjects();
@@ -133,6 +138,27 @@ public class ShoppingListActivity extends AppCompatActivity {
         toggle.onConfigurationChanged(newConfig);
     }
 
+    public boolean onNavigationItemSelected(MenuItem item){
+        Log.d("AAAAAAAAAAA", "onNavigationItemSelected: ");
+        switch (item.getItemId()){
+            case  R.id.nav_item_profile:
+
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+            case  R.id.nav_item_shopping_list:
+                break;
+            case  R.id.nav_item_history:
+                break;
+            case  R.id.nav_item_logout:
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
 
     /**
      * This method is to fetch all user records from SQLite
