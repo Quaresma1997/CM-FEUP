@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.InputValidation;
+import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
 import org.feup.acmeeletronicsshop.model.User;
 import org.feup.acmeeletronicsshop.server.API;
 import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
@@ -76,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private String url;
 
-    //private RequestQueue queue;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +85,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
 
-        url = "http://fa9832de.ngrok.io/users";
+        url = "http://2bfdb074.ngrok.io";
+
+        queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
 
         initViews();
@@ -180,7 +183,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        final RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+        //final RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
 
         KeyPairGenerator keyPairGenerator = null;
         try {
@@ -215,14 +218,32 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        String url = "http://89950a8b.ngrok.io/register";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
+        String register_url = url + "/register";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, register_url, json,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d("RESPONSE", "String Response : "+ response.toString());
                         Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
                         emptyInputEditText();
+
+                        Toast.makeText(getApplicationContext(), "Welcome! You're signed in.", Toast.LENGTH_SHORT).show();
+                        try {
+                            if(response.get("message").equals("User and card successfully added"));
+                            Intent intent = new Intent(
+                                    RegisterActivity.this,
+                                    ShoppingListActivity.class);
+                            //intent.putExtra("user", (Serializable) user);
+                            startActivity(intent);
+                            finish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // Launch login activity
+
+
+
 
                     }
                 }, new Response.ErrorListener() {

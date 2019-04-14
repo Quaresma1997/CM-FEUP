@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,11 +19,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
+import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
 import org.feup.acmeeletronicsshop.model.Product;
 import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +91,7 @@ public class ShoppingListActivity extends AppCompatActivity {
      */
     private void initObjects() {
         listProducts = new ArrayList<>();
+        getProducts();
         listProducts.add(new Product(1, "prod1", "model", "maker", "red", "description", 10));
         listProducts.add(new Product(2, "prod2", "model", "maker", "red", "description", 10));
         productsRecyclerAdapter = new ProductsRecyclerAdapter(listProducts);
@@ -88,7 +101,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         recyclerViewProducts.setItemAnimator(new DefaultItemAnimator());
         recyclerViewProducts.setHasFixedSize(true);
         recyclerViewProducts.setAdapter(productsRecyclerAdapter);
-        databaseHelper = new DatabaseHelper(activity);
+//        databaseHelper = new DatabaseHelper(activity);
 
 //        String emailFromIntent = getIntent().getStringExtra("EMAIL");
 //        textViewName.setText(emailFromIntent);
@@ -163,5 +176,49 @@ public class ShoppingListActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getProducts() {
+
+        RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+
+
+        String url = "http://89950a8b.ngrok.io/shoppinglist/5";
+
+        JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                           JSONArray products = response.getJSONArray("products");
+                           for(int i = 0; i < products.length(); i++){
+                               JSONObject product = products.getJSONObject(i);
+                               int id = product.getInt("idProduct");
+                               String name = "name";
+                               String model = product.getString("model");
+                               String maker = product.getString("maker");
+                               String color = product.getString("color");
+                               String description = product.getString("description");
+                               int price = product.getInt("price");
+                               listProducts.add(new Product(id, model, model, maker, color, description, price));
+
+                           }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+
+        queue.add(productsRequest);
+
     }
 }
