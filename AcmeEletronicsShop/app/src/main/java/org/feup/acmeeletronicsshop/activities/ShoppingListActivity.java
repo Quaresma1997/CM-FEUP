@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -139,17 +137,20 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     }
 
     public boolean onNavigationItemSelected(MenuItem item){
-        Log.d("AAAAAAAAAAA", "onNavigationItemSelected: ");
+        Intent intent;
         switch (item.getItemId()){
             case  R.id.nav_item_profile:
 
-                Intent intent = new Intent(this, ProfileActivity.class);
+                intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case  R.id.nav_item_shopping_list:
                 break;
             case  R.id.nav_item_history:
+                intent = new Intent(this, TransactionHistoryActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case  R.id.nav_item_logout:
                 break;
@@ -209,7 +210,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
 
-        String url = "http://89950a8b.ngrok.io/shoppinglist/5";
+        String url = "http://6d10e24a.ngrok.io/shoppinglist/5";
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {

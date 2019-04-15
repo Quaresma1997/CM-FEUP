@@ -9,19 +9,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import org.feup.acmeeletronicsshop.R;
 
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class TransactionHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_history);
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
@@ -71,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-       if (toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -81,6 +82,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         Intent intent;
         switch (item.getItemId()){
             case  R.id.nav_item_profile:
+                intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case  R.id.nav_item_shopping_list:
                 intent = new Intent(this, ShoppingListActivity.class);
@@ -88,9 +92,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 finish();
                 break;
             case  R.id.nav_item_history:
-                intent = new Intent(this, TransactionHistoryActivity.class);
-                startActivity(intent);
-                finish();
                 break;
             case  R.id.nav_item_logout:
                 break;
