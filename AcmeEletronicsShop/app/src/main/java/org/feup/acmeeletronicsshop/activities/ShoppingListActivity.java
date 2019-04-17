@@ -1,7 +1,12 @@
 package org.feup.acmeeletronicsshop.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -18,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.android.volley.Request;
@@ -45,6 +51,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private List<Product> listProducts;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
     private DatabaseHelper databaseHelper;
+
+    static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -75,6 +83,18 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         initObjects();
         initDrawer();
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+//        bundle.putCharSequence("Message", message.getText());
+    }
+
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+//        message.setText(bundle.getCharSequence("Message"));
     }
 
     /**
@@ -161,28 +181,54 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         return true;
     }
 
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-    private void getDataFromSQLite() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                listUsers.clear();
-//                listUsers.addAll(databaseHelper.getAllUser());
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//                productsRecyclerAdapter.notifyDataSetChanged();
-//            }
-//        }.execute();
+    public void scan() {
+        try {
+            Intent intent = new Intent(ACTION_SCAN);
+            intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            startActivityForResult(intent, 0);
+        }
+        catch (ActivityNotFoundException anfe) {
+            showDialog(this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+        }
+    }
 
+    private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                act.startActivity(intent);
+            }
+        });
+        downloadDialog.setNegativeButton(buttonNo, null);
+        return downloadDialog.show();
+    }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        byte[] baMess = null;
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String contents = data.getStringExtra("SCAN_RESULT");
+                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
+                try {
+                    baMess = contents.getBytes("ISO-8859-1");
+                }
+                catch (Exception ex) {
+                }
+                //message.setText("Format: " + format + "\nMessage: " + contents + "\n\nHex: " + byteArrayToHex(baMess));
+            }
+        }
+    }
+
+    String byteArrayToHex(byte[] ba) {
+        StringBuilder sb = new StringBuilder(ba.length * 2);
+        for(byte b: ba)
+            sb.append(String.format("%02x", b));
+        return sb.toString();
     }
 
     // create an action bar button
@@ -198,7 +244,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         int id = item.getItemId();
 
         if (id == R.id.btnAdd) {
-            Log.d("AAAAAAAA", "BBBBBBB");
+            scan();
         }else if (toggle.onOptionsItemSelected(item)) {
             return true;
         }

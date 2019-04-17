@@ -29,7 +29,6 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
 
         initDrawer();
 
-        invalidateOptionsMenu();
 
         NavigationView navView = findViewById(R.id.nav_view);
         navView.bringToFront();
@@ -51,10 +50,6 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
 
 
     public void onPostCreate(Bundle savedInstanceState) {

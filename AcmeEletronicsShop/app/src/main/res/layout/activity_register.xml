@@ -51,8 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
-                android:inputType="text"
                 android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
@@ -147,29 +147,28 @@
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/hint_credit_card_type"
+            android:textSize="18sp"/>
+
         <RadioGroup
             android:id="@+id/radioGroupInputCreditCardType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="10dp">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/hint_credit_card_type"
-                android:textSize="18sp"/>
-
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeVisa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:text="@string/credit_card_type_visa"
                 android:textColor="@android:color/white"
+                android:layout_marginEnd="10dp"
                 android:textSize="18sp"/>
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeMasterCard"

@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
 
-        url = "http://6d10e24a.ngrok.io";
+        url = "http://65e13f1b.ngrok.io";
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
@@ -159,6 +159,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.appCompatTextViewLoginLink:
+                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intentLogin);
                 finish();
                 break;
         }
@@ -229,13 +231,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                         Toast.makeText(getApplicationContext(), "Welcome! You're signed in.", Toast.LENGTH_SHORT).show();
                         try {
-                            if(response.get("message").equals("User and card successfully added"));
-                            Intent intent = new Intent(
-                                    RegisterActivity.this,
-                                    ShoppingListActivity.class);
-                            //intent.putExtra("user", (Serializable) user);
-                            startActivity(intent);
-                            finish();
+                            if(response.get("message").equals("User and card successfully added")) {
+                                Intent intent = new Intent(
+                                        RegisterActivity.this,
+                                        ShoppingListActivity.class);
+                                //intent.putExtra("user", (Serializable) user);
+                                startActivity(intent);
+                                finish();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();

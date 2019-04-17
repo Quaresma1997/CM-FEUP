@@ -28,8 +28,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         initDrawer();
 
-        invalidateOptionsMenu();
-
         NavigationView navView = findViewById(R.id.nav_view);
         navView.bringToFront();
         navView.setNavigationItemSelectedListener(this);
@@ -49,12 +47,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         }
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
 
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
