@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:paddingLeft="20dp"
-    android:paddingTop="20dp"
-    android:paddingRight="20dp"
     android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
     tools:context=".activities.LoginActivity">
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -37,6 +37,22 @@
                 android:hint="@string/hint_name"
                 android:inputType="text"
                 android:maxLines="1"
+                android:textColor="@android:color/white" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/textInputEditTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_email"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
@@ -72,21 +88,7 @@
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayoutEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/textInputEditTextEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_email"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textColor="@android:color/white" />
-        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutPassword"
@@ -120,14 +122,14 @@
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/text_credit_card_info"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutCreditCardNumber"
@@ -145,38 +147,36 @@
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/hint_credit_card_type"
+            android:textSize="18sp"/>
+
         <RadioGroup
             android:id="@+id/radioGroupInputCreditCardType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="20dp"
-                android:text="@string/hint_credit_card_type"
-                android:textSize="18sp" />
-
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeVisa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:text="@string/credit_card_type_visa"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"/>
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeMasterCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/credit_card_type_master_card"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
         </RadioGroup>
 
@@ -203,6 +203,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/colorTextHint"
             android:text="@string/text_register" />
+
 
 
         <android.support.v7.widget.AppCompatTextView

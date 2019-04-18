@@ -35,6 +35,9 @@
 
     <string name="text_added_products">Added products</string>
     <string name="text_shopping_list">Shopping List</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_transaction_history">Transaction History</string>
+    <string name="text_detailed_order">Detailed Order</string>
 
     <string name="hint_name_product">Name</string>
     <string name="hint_price_product">Price</string>
@@ -49,5 +52,22 @@
     <string name="navigation_drawer_open">Open drawer</string>
     <string name="navigation_drawer_close">Close drawer</string>
 
+    <string name="navigation_drawer_icon_profile">Profile</string>
+    <string name="navigation_drawer_icon_shopping_list">Shopping List</string>
+    <string name="navigation_drawer_icon_history">History</string>
+    <string name="navigation_drawer_icon_logout">Logout</string>
+
+    <string name="profile_email">Email</string>
+    <string name="profile_address">Address</string>
+    <string name="profile_fiscal_number">Fiscal Number</string>
+
+    <string name="transaction_order_id">Order ID</string>
+    <string name="transaction_date">Date</string>
+    <string name="item_product_remove">Remove Product</string>
+
+    <string name="transaction_item_name">Name</string>
+    <string name="transaction_item_quantity">Quantity</string>
+
+    <string name="tetx_product_list">Product List</string>
 
 </resources>

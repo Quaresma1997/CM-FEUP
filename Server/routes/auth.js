@@ -40,7 +40,7 @@ router.post("/login", (req, res) => {
         password: md5(req.body.password)
     }
 
-    db.get('SELECT idUser FROM User WHERE email = ? AND password = ?', [req.body.email, req.body.password], function (err, user) {
+    db.get('SELECT idUser FROM User WHERE email = ? AND password = ?', [data.email, data.password], function (err, user) {
         if (err) {
             res.status(400).json({ "error": err.message });
             return;
@@ -88,7 +88,7 @@ router.post("/register", (req, res, next) => {
 
     db.serialize(() => {
         var sql = 'INSERT INTO User (name, email, address, password, fiscalNumber, publicKey) VALUES (?,?,?,?,?,?)'
-        var params = [data.name, data.email, data.password, data.address, data.fiscalNumber, data.publicKey]
+        var params = [data.name, data.email, data.address, data.password, data.fiscalNumber, data.publicKey]
         db.run(sql, params, function (err, result) {
 
             if (err) {

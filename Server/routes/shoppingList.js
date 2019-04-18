@@ -9,7 +9,7 @@ router.get("/:idUser", (req, res, next) => {
 	console.log(req.params.idUser);
 	stmt.all(req.params.idUser, (err, rows) => {
 		if (rows != undefined && rows != null) {
-			res.json(rows); // id is valid
+			res.json({"products" : rows}); // id is valid
 		} else {
 			console.log(rows);
 			res.json('No Cart'); // id doesn't exist

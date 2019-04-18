@@ -9,12 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.InputValidation;
+import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
 import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -35,11 +46,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private InputValidation inputValidation;
     private DatabaseHelper databaseHelper;
 
+    private RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //getSupportActionBar().hide();
+
+        queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+
 
         initViews();
         initListeners();
@@ -91,14 +107,67 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
-                verifyFromSQLite();
+                Log.d("ENTREI", "entrei");
+                //verifyFromSQLite();
+                loginAPI();
                 break;
             case R.id.textViewLinkRegister:
                 // Navigate to RegisterActivity
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
+                finish();
                 break;
         }
+    }
+
+    private void loginAPI() {
+        JSONObject json = new JSONObject();
+        try {
+
+            json.put("email", textInputEditTextEmail.getText().toString());
+            json.put("password",textInputEditTextPassword.getText().toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        String url = "http://65e13f1b.ngrok.io/login";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            Log.d("RESPONSE", "String Response : "+ response.get("message").toString());
+                            if((response.get("message").toString()).equals("Success")) {
+
+                                Toast.makeText(getApplicationContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
+
+                                // Launch login activity
+                                Intent intent = new Intent(
+                                        LoginActivity.this,
+                                        ShoppingListActivity.class);
+                                //intent.putExtra("user", (Serializable) user);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Wrong email or password.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+
     }
 
     /**
@@ -123,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
             startActivity(accountsIntent);
-
+            finish();
 
         } else {
             // Snack Bar to show success message that record is wrong
