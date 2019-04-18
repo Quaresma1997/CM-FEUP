@@ -36,4 +36,5 @@
     <style name="DialogButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#007fff</item>
     </style>
+
 </resources>

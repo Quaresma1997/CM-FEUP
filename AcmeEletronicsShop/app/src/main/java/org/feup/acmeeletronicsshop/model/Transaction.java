@@ -7,14 +7,16 @@ public class Transaction {
     private int id;
     private Date date;
     private double totalCost;
+    private String token;
     private List<TransactionItem> itemList;
 
 
-    public Transaction(int id, Date date, double totalCost, List<TransactionItem> itemList) {
+    public Transaction(int id, Date date, double totalCost, List<TransactionItem> itemList, String token) {
         this.id = id;
         this.date = date;
         this.totalCost = totalCost;
         this.itemList = itemList;
+        this.token = token;
     }
 
     public int getId() {
@@ -41,11 +43,19 @@ public class Transaction {
         this.totalCost = totalCost;
     }
 
-    public List<TransactionItem> getItemlists() {
+    public List<TransactionItem> getItemlist() {
         return itemList;
     }
 
-    public void setItemlists(List<TransactionItem> itemList) {
+    public void setItemlist(List<TransactionItem> itemList) {
         this.itemList = itemList;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

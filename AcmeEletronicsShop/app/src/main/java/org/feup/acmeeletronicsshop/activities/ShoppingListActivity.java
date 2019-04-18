@@ -2,10 +2,12 @@ package org.feup.acmeeletronicsshop.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,14 +25,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
@@ -42,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,7 +60,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private RecyclerView recyclerViewProducts;
     private List<Product> listProducts;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
-    private DatabaseHelper databaseHelper;
 
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
 
@@ -58,6 +67,10 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
 
+    private Dialog qrCodeDialog;
+
+    final static int DIMENSION=300;
+    final static String CH_SET="ISO-8859-1";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +84,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openDialog(ShoppingListActivity.this);
             }
         });
 
@@ -86,17 +99,102 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    public void openDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingListActivity.this, R.style.LightDialogTheme);
-        builder.setTitle("Title of Alert");
+    private AlertDialog openDialog(final Activity act) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(act, R.style.LightDialogTheme);
+        builder.setTitle("Confirm Payment");
         builder.setMessage("Are you Sure ?");
-        builder.setCancelable(false);
+        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //TODO Send shopping list, signed with the private key stored when the registration was performed. Use
+                //TODO “SHA1WithRSA” as the signature algorithm
+
+                //TODO SERVER : ponto 4 do enunciado
+
+                //TODO Receive the token (UUID)
+                //TODO Create a transaction
+                //TODO Generate a QR CODE with the token
+                String token = "AAA";
+
+                QRCodeDialog(token);
 
 
-        builder.setPositiveButton("yes", null);
+            }
+        });
         builder.setNegativeButton("No", null);
-        AlertDialog alert = builder.create();
-        alert.show();
+        return builder.show();
+    }
+
+    Bitmap encodeAsBitmap(String str) {
+        BitMatrix result;
+
+        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+        hints.put(EncodeHintType.CHARACTER_SET, CH_SET);
+        try {
+            result = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, DIMENSION, DIMENSION, hints);
+        }
+        catch (Exception exc) {
+//            runOnUiThread(()->errorTv.setText(exc.getMessage()));
+            return null;
+        }
+        int w = result.getWidth();
+        int h = result.getHeight();
+        int[] pixels = new int[w * h];
+        for (int line = 0; line < h; line++) {
+            int offset = line * w;
+            for (int col = 0; col < w; col++) {
+                pixels[offset + col] = result.get(col, line) ? getResources().getColor(R.color.colorPrimary):getResources().getColor(R.color.colorAccent);
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+        return bitmap;
+    }
+
+
+
+    public void QRCodeDialog(final String token){
+        qrCodeDialog = new Dialog(ShoppingListActivity.this);
+        qrCodeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        qrCodeDialog.setContentView(R.layout.qrcodedialog);
+        qrCodeDialog.setTitle("Generated QR Code");
+
+
+
+
+
+
+        Thread t = new Thread(new Runnable() {    // convert in a separate thread to avoid possible ANR
+            public void run() {
+                final Bitmap bitmap;
+                final ImageView qrCodeIv = (ImageView) qrCodeDialog.findViewById(R.id.imgView);
+                final Button confirm = (Button)qrCodeDialog.findViewById(R.id.btnConfirm);
+
+                bitmap = encodeAsBitmap(token);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        qrCodeIv.setImageBitmap(bitmap);
+                        confirm.setEnabled(true);
+                    }
+                });
+
+
+
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        qrCodeDialog.cancel();
+                    }
+                });
+
+
+            }
+        });
+        t.start();
+
+
+
+        qrCodeDialog.show();
     }
 
     @Override
@@ -206,7 +304,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     }
 
     private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
-        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act);
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act, R.style.LightDialogTheme);
         downloadDialog.setTitle(title);
         downloadDialog.setMessage(message);
         downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
@@ -221,28 +319,15 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        byte[] baMess = null;
 
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                String contents = data.getStringExtra("SCAN_RESULT");
-                String format = data.getStringExtra("SCAN_RESULT_FORMAT");
-                try {
-                    baMess = contents.getBytes("ISO-8859-1");
-                }
-                catch (Exception ex) {
-                }
-                //message.setText("Format: " + format + "\nMessage: " + contents + "\n\nHex: " + byteArrayToHex(baMess));
+                String product_barcode = data.getStringExtra("SCAN_RESULT");
+                //TODO Add product to the productListView
             }
         }
     }
 
-    String byteArrayToHex(byte[] ba) {
-        StringBuilder sb = new StringBuilder(ba.length * 2);
-        for(byte b: ba)
-            sb.append(String.format("%02x", b));
-        return sb.toString();
-    }
 
     // create an action bar button
     @Override
