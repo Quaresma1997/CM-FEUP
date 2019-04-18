@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
 
-        url = "http://65e13f1b.ngrok.io";
+        url = "http://63088cf3.ngrok.io";
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 

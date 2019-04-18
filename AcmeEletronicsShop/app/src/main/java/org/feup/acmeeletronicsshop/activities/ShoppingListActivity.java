@@ -71,7 +71,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ShoppingListActivity.this,PayPopup.class));
+                openDialog();
             }
         });
 
@@ -84,6 +84,19 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         initDrawer();
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    public void openDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingListActivity.this, R.style.LightDialogTheme);
+        builder.setTitle("Title of Alert");
+        builder.setMessage("Are you Sure ?");
+        builder.setCancelable(false);
+
+
+        builder.setPositiveButton("yes", null);
+        builder.setNegativeButton("No", null);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -256,7 +269,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
 
-        String url = "http://6d10e24a.ngrok.io/shoppinglist/5";
+        String url = "http://63088cf3.ngrok.io/shoppinglist/5";
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -264,19 +277,19 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                     public void onResponse(JSONObject response) {
 
                         try {
-                           JSONArray products = response.getJSONArray("products");
-                           for(int i = 0; i < products.length(); i++){
-                               JSONObject product = products.getJSONObject(i);
-                               int id = product.getInt("idProduct");
-                               String name = "name";
-                               String model = product.getString("model");
-                               String maker = product.getString("maker");
-                               String color = product.getString("color");
-                               String description = product.getString("description");
-                               int price = product.getInt("price");
-                               listProducts.add(new Product(id, model, model, maker, color, description, price));
+                            JSONArray products = response.getJSONArray("products");
+                            for(int i = 0; i < products.length(); i++){
+                                JSONObject product = products.getJSONObject(i);
+                                int id = product.getInt("idProduct");
+                                String name = "name";
+                                String model = product.getString("model");
+                                String maker = product.getString("maker");
+                                String color = product.getString("color");
+                                String description = product.getString("description");
+                                int price = product.getInt("price");
+                                listProducts.add(new Product(id, model, model, maker, color, description, price));
 
-                           }
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
