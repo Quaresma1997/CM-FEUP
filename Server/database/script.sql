@@ -29,7 +29,7 @@ CREATE TABLE Product(
     model TEXT NOT NULL,
     maker TEXT NOT NULL,
     color TEXT NOT NULL,
-    price INTEGER NOT NULL,
+    price FLOAT NOT NULL,
     barcode INTEGER NOT NULL,
     description TEXT
 );
@@ -49,7 +49,10 @@ CREATE TABLE ShoppingListItem(
 CREATE TABLE Transactions(
     idTransaction TEXT PRIMARY KEY,
     day DATE NOT NULL,
-    idUser INTEGER REFERENCES User(idUser)
+    idUser INTEGER REFERENCES User(idUser),
+    total FLOAT NOT NULL,
+    token TEXT NOT NULL
+
 );
 
 CREATE TABLE TransactionItem(

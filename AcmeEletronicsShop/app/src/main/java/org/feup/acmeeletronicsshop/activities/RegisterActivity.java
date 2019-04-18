@@ -85,7 +85,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
 
-        url = "http://2bfdb074.ngrok.io";
+<<<<<<< HEAD
+        url = "http://0dbe105c.ngrok.io";
+=======
+        url = "http://63088cf3.ngrok.io";
+>>>>>>> master
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
@@ -159,6 +163,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.appCompatTextViewLoginLink:
+                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intentLogin);
                 finish();
                 break;
         }
@@ -167,7 +173,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void submitForm() {
         int selected = radioGroupInputCreditCardType.getCheckedRadioButtonId();
-        String type;
+        final String type;
         if(selected == R.id.rdButtonInputCreditCardTypeVisa){
             type = "visa";
         }
@@ -196,8 +202,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         // generate a keypair
         KeyPair pair = keyPairGenerator.generateKeyPair();
-        PrivateKey priv = pair.getPrivate();
-        PublicKey pub = pair.getPublic();
+        final PrivateKey priv = pair.getPrivate();
+        final PublicKey pub = pair.getPublic();
 
         JSONObject json = new JSONObject();
         try {
@@ -227,15 +233,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
                         emptyInputEditText();
 
-                        Toast.makeText(getApplicationContext(), "Welcome! You're signed in.", Toast.LENGTH_SHORT).show();
                         try {
-                            if(response.get("message").equals("User and card successfully added"));
-                            Intent intent = new Intent(
-                                    RegisterActivity.this,
-                                    ShoppingListActivity.class);
-                            //intent.putExtra("user", (Serializable) user);
-                            startActivity(intent);
-                            finish();
+<<<<<<< HEAD
+                            if(response.get("message").equals("User and card successfully added")){
+                                Toast.makeText(getApplicationContext(), "Welcome! You're signed in!", Toast.LENGTH_SHORT).show();
+                                user = new User(textInputEditTextName.getText().toString(), textInputEditTextAddress.getText().toString(), textInputEditTextEmail.getText().toString(), textInputEditTextConfirmPassword.getText().toString(), textInputEditTextFiscalNumber.getText().toString(), pub.toString(), priv.toString(), textInputEditTextCreditCardNumber.getText().toString(), type, textInputEditTextCreditCardValidity.getText().toString());
+                                Intent intent = new Intent(
+                                        RegisterActivity.this,
+                                        ShoppingListActivity.class);
+                                intent.putExtra("user_id", response.get("id").toString());
+                                /*intent.putExtra("user_name", user.getName());*/
+=======
+                            if(response.get("message").equals("User and card successfully added")) {
+                                Intent intent = new Intent(
+                                        RegisterActivity.this,
+                                        ShoppingListActivity.class);
+                                //intent.putExtra("user", (Serializable) user);
+>>>>>>> master
+                                startActivity(intent);
+                                finish();
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();

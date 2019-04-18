@@ -29,8 +29,11 @@
         <activity android:name=".activities.PayPopup" />
         <activity android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.OrderHistoryActivity"
+        <activity android:name=".activities.TransactionHistoryActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.DetailedTransactionActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.TransactionHistoryActivity"/>
     </application>
 
 </manifest>

@@ -1,11 +1,17 @@
 package org.feup.acmeeletronicsshop.activities;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +25,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -27,17 +36,23 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
 import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
 import org.feup.acmeeletronicsshop.model.Product;
+import org.feup.acmeeletronicsshop.model.User;
 import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,12 +61,17 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private RecyclerView recyclerViewProducts;
     private List<Product> listProducts;
     private ProductsRecyclerAdapter productsRecyclerAdapter;
-    private DatabaseHelper databaseHelper;
+
+    static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
 
+    private Dialog qrCodeDialog;
+
+    final static int DIMENSION=300;
+    final static String CH_SET="ISO-8859-1";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +85,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ShoppingListActivity.this,PayPopup.class));
+                openDialog(ShoppingListActivity.this);
             }
         });
 
@@ -77,6 +97,116 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         initObjects();
         initDrawer();
 
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private AlertDialog openDialog(final Activity act) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(act, R.style.LightDialogTheme);
+        builder.setTitle("Confirm Payment");
+        builder.setMessage("Are you Sure ?");
+        builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //TODO Send shopping list, signed with the private key stored when the registration was performed. Use
+                //TODO “SHA1WithRSA” as the signature algorithm
+
+                //TODO SERVER : ponto 4 do enunciado
+
+                //TODO Receive the token (UUID)
+                //TODO Create a transaction
+                //TODO Generate a QR CODE with the token
+                String token = "AAA";
+
+                QRCodeDialog(token);
+
+
+            }
+        });
+        builder.setNegativeButton("No", null);
+        return builder.show();
+    }
+
+    Bitmap encodeAsBitmap(String str) {
+        BitMatrix result;
+
+        Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+        hints.put(EncodeHintType.CHARACTER_SET, CH_SET);
+        try {
+            result = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, DIMENSION, DIMENSION, hints);
+        }
+        catch (Exception exc) {
+//            runOnUiThread(()->errorTv.setText(exc.getMessage()));
+            return null;
+        }
+        int w = result.getWidth();
+        int h = result.getHeight();
+        int[] pixels = new int[w * h];
+        for (int line = 0; line < h; line++) {
+            int offset = line * w;
+            for (int col = 0; col < w; col++) {
+                pixels[offset + col] = result.get(col, line) ? getResources().getColor(R.color.colorPrimary):getResources().getColor(R.color.colorAccent);
+            }
+        }
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+        return bitmap;
+    }
+
+
+
+    public void QRCodeDialog(final String token){
+        qrCodeDialog = new Dialog(ShoppingListActivity.this);
+        qrCodeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        qrCodeDialog.setContentView(R.layout.qrcodedialog);
+        qrCodeDialog.setTitle("Generated QR Code");
+
+
+
+
+
+
+        Thread t = new Thread(new Runnable() {    // convert in a separate thread to avoid possible ANR
+            public void run() {
+                final Bitmap bitmap;
+                final ImageView qrCodeIv = (ImageView) qrCodeDialog.findViewById(R.id.imgView);
+                final Button confirm = (Button)qrCodeDialog.findViewById(R.id.btnConfirm);
+
+                bitmap = encodeAsBitmap(token);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        qrCodeIv.setImageBitmap(bitmap);
+                        confirm.setEnabled(true);
+                    }
+                });
+
+
+
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        qrCodeDialog.cancel();
+                    }
+                });
+
+
+            }
+        });
+        t.start();
+
+
+
+        qrCodeDialog.show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+//        bundle.putCharSequence("Message", message.getText());
+    }
+
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+//        message.setText(bundle.getCharSequence("Message"));
     }
 
     /**
@@ -97,8 +227,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private void initObjects() {
         listProducts = new ArrayList<>();
         getProducts();
-        listProducts.add(new Product(1, "prod1", "model", "maker", "red", "description", 10));
-        listProducts.add(new Product(2, "prod2", "model", "maker", "red", "description", 10));
         productsRecyclerAdapter = new ProductsRecyclerAdapter(listProducts);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -139,17 +267,20 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     }
 
     public boolean onNavigationItemSelected(MenuItem item){
-        Log.d("AAAAAAAAAAA", "onNavigationItemSelected: ");
+        Intent intent;
         switch (item.getItemId()){
             case  R.id.nav_item_profile:
 
-                Intent intent = new Intent(this, ProfileActivity.class);
+                intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case  R.id.nav_item_shopping_list:
                 break;
             case  R.id.nav_item_history:
+                intent = new Intent(this, TransactionHistoryActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             case  R.id.nav_item_logout:
                 break;
@@ -160,29 +291,42 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         return true;
     }
 
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-    private void getDataFromSQLite() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                listUsers.clear();
-//                listUsers.addAll(databaseHelper.getAllUser());
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//                productsRecyclerAdapter.notifyDataSetChanged();
-//            }
-//        }.execute();
-
-
+    public void scan() {
+        try {
+            Intent intent = new Intent(ACTION_SCAN);
+            intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+            startActivityForResult(intent, 0);
+        }
+        catch (ActivityNotFoundException anfe) {
+            showDialog(this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+        }
     }
+
+    private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(act, R.style.LightDialogTheme);
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                act.startActivity(intent);
+            }
+        });
+        downloadDialog.setNegativeButton(buttonNo, null);
+        return downloadDialog.show();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                String product_barcode = data.getStringExtra("SCAN_RESULT");
+                //TODO Add product to the productListView
+            }
+        }
+    }
+
 
     // create an action bar button
     @Override
@@ -197,7 +341,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         int id = item.getItemId();
 
         if (id == R.id.btnAdd) {
-            Log.d("AAAAAAAA", "BBBBBBB");
+            scan();
         }else if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -208,8 +352,22 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
         RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
+        String user_id = "7";
 
-        String url = "http://89950a8b.ngrok.io/shoppinglist/5";
+<<<<<<< HEAD
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+             user_id = extras.getString("user_id");
+
+            //The key argument here must match that used in the other activity
+        }
+
+        Log.d("URL", user_id);
+
+        String url = "http://0dbe105c.ngrok.io/shoppinglist/" + user_id;
+=======
+        String url = "http://63088cf3.ngrok.io/shoppinglist/5";
+>>>>>>> master
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -217,19 +375,19 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                     public void onResponse(JSONObject response) {
 
                         try {
-                           JSONArray products = response.getJSONArray("products");
-                           for(int i = 0; i < products.length(); i++){
-                               JSONObject product = products.getJSONObject(i);
-                               int id = product.getInt("idProduct");
-                               String name = "name";
-                               String model = product.getString("model");
-                               String maker = product.getString("maker");
-                               String color = product.getString("color");
-                               String description = product.getString("description");
-                               int price = product.getInt("price");
-                               listProducts.add(new Product(id, model, model, maker, color, description, price));
+                            JSONArray products = response.getJSONArray("products");
+                            for(int i = 0; i < products.length(); i++){
+                                JSONObject product = products.getJSONObject(i);
+                                int id = product.getInt("idProduct");
+                                String name = "name";
+                                String model = product.getString("model");
+                                String maker = product.getString("maker");
+                                String color = product.getString("color");
+                                String description = product.getString("description");
+                                int price = product.getInt("price");
+                                listProducts.add(new Product(id, model, model, maker, color, description, price));
 
-                           }
+                            }
 
                         } catch (JSONException e) {
                             e.printStackTrace();

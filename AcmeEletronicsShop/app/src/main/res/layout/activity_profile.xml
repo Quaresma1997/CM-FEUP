@@ -57,12 +57,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp">
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_email"/>
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtEmail"/>
@@ -74,12 +74,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp">
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_address"/>
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtAddress"/>
@@ -91,12 +91,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp">
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/profile_fiscal_number"/>
 
-                    <TextView
+                    <android.support.v7.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtFiscalNumber"/>

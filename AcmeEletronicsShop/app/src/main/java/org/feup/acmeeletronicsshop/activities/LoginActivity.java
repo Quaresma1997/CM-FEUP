@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Navigate to RegisterActivity
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
+                finish();
                 break;
         }
     }
@@ -131,7 +132,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
-        String url = "http://2bfdb074.ngrok.io/login";
+<<<<<<< HEAD
+        String url = "http://0dbe105c.ngrok.io/login";
+=======
+        String url = "http://63088cf3.ngrok.io/login";
+>>>>>>> master
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -191,7 +196,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
             emptyInputEditText();
             startActivity(accountsIntent);
-
+            finish();
 
         } else {
             // Snack Bar to show success message that record is wrong
