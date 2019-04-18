@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.InputValidation;
 import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
+import org.feup.acmeeletronicsshop.model.User;
 import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
-        String url = "http://0dbe105c.ngrok.io/login";
+        String url = "http://b920c440.ngrok.io/login";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
@@ -144,12 +145,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if((response.get("message").toString()).equals("Success")) {
 
                                 Toast.makeText(getApplicationContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
-
+                                User user = new User();
+                                user.setName(response.getJSONObject("data").getString("name"));
+                                user.setId(response.getJSONObject("data").getInt("idUser"));
                                 // Launch login activity
-                                Intent intent = new Intent(
-                                        LoginActivity.this,
-                                        ShoppingListActivity.class);
-                                //intent.putExtra("user", (Serializable) user);
+                                Intent intent = new Intent(LoginActivity.this, ShoppingListActivity.class);
+                                Bundle b = new Bundle();
+                                b.putSerializable("user", user);
+                                intent.putExtras(b);
                                 startActivity(intent);
                                 finish();
                             }

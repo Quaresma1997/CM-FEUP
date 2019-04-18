@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
 
-        url = "http://0dbe105c.ngrok.io";
+        url = "http://b920c440.ngrok.io";
 
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
@@ -235,12 +235,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if(response.get("message").equals("User and card successfully added")){
                                 Toast.makeText(getApplicationContext(), "Welcome! You're signed in!", Toast.LENGTH_SHORT).show();
                                 user = new User(textInputEditTextName.getText().toString(), textInputEditTextAddress.getText().toString(), textInputEditTextEmail.getText().toString(), textInputEditTextConfirmPassword.getText().toString(), textInputEditTextFiscalNumber.getText().toString(), pub.toString(), priv.toString(), textInputEditTextCreditCardNumber.getText().toString(), type, textInputEditTextCreditCardValidity.getText().toString());
-                                Intent intent = new Intent(
-                                        RegisterActivity.this,
-                                        ShoppingListActivity.class);
-                                intent.putExtra("user_id", response.get("id").toString());
-                                /*intent.putExtra("user_name", user.getName());*/
-
+                                user.setId(response.getInt("id"));
+                                Intent intent = new Intent(RegisterActivity.this, ShoppingListActivity.class);
+                                Bundle b = new Bundle();
+                                b.putSerializable("user", user);
+                                intent.putExtras(b);
                                 startActivity(intent);
                                 finish();
                             }

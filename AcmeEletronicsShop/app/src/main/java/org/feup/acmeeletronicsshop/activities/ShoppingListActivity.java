@@ -73,6 +73,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     final static int DIMENSION=300;
     final static String CH_SET="ISO-8859-1";
 
+    User user;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,11 +95,15 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         navView.bringToFront();
         navView.setNavigationItemSelectedListener(this);
 
+        user = (User) getIntent().getSerializableExtra("user");
+
         initViews();
         initObjects();
         initDrawer();
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
     }
 
     private AlertDialog openDialog(final Activity act) {
@@ -226,7 +232,12 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
      */
     private void initObjects() {
         listProducts = new ArrayList<>();
-        getProducts();
+
+
+        if(listProducts.size() == 0){
+            Log.d("ITNULL", "no product");
+        }
+
         productsRecyclerAdapter = new ProductsRecyclerAdapter(listProducts);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -234,6 +245,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         recyclerViewProducts.setItemAnimator(new DefaultItemAnimator());
         recyclerViewProducts.setHasFixedSize(true);
         recyclerViewProducts.setAdapter(productsRecyclerAdapter);
+
+        getProducts();
 //        databaseHelper = new DatabaseHelper(activity);
 
 //        String emailFromIntent = getIntent().getStringExtra("EMAIL");
@@ -352,19 +365,10 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
         RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
-        String user_id = "7";
+        //DEBUGGING
+        Log.d("NAME", "some" + user.getName() + "thing");
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-             user_id = extras.getString("user_id");
-
-            //The key argument here must match that used in the other activity
-        }
-
-        Log.d("URL", user_id);
-
-        String url = "http://0dbe105c.ngrok.io/shoppinglist/" + user_id;
-
+        String url = "http://b920c440.ngrok.io/shoppinglist/" + user.getId();
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -372,6 +376,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                     public void onResponse(JSONObject response) {
 
                         try {
+                            //DEBUGGING
+                            Log.d("PRODUCTS", "String Response : "+ response.toString());
                             JSONArray products = response.getJSONArray("products");
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
@@ -383,7 +389,12 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 String description = product.getString("description");
                                 int price = product.getInt("price");
                                 listProducts.add(new Product(id, model, model, maker, color, description, price));
+                                productsRecyclerAdapter.notifyDataSetChanged();
 
+                            }
+                            //DEBUGGING
+                            for (int j = 0; j < listProducts.size(); j++) {
+                                Log.d("IT" + j, listProducts.get(j).getModel());
                             }
 
                         } catch (JSONException e) {
