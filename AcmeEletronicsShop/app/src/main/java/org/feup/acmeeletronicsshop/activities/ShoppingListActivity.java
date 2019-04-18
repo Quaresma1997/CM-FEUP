@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -52,14 +53,25 @@ public class ShoppingListActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ShoppingListActivity.this,PayPopup.class));
+                openDialog();
             }
         });
 
         initViews();
         initObjects();
         initDrawer();
+    }
 
+    public void openDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(ShoppingListActivity.this,R.style.LightDialogTheme);
+        builder.setTitle("Title of Alert");
+        builder.setMessage("Are you Sure ?");
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("yes", null);
+        builder.setNegativeButton("No",null);
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     /**

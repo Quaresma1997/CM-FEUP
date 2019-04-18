@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    android:paddingBottom="20dp"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:paddingTop="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="20dp"
     tools:context=".activities.LoginActivity">
 
     <android.support.v7.widget.LinearLayoutCompat
@@ -126,8 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/text_credit_card_info"
-            android:textSize="20sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textInputLayoutCreditCardNumber"
@@ -149,8 +149,8 @@
             android:id="@+id/radioGroupInputCreditCardType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/header"
@@ -159,7 +159,7 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/hint_credit_card_type"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeVisa"
@@ -168,14 +168,15 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/credit_card_type_visa"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
+
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeMasterCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/credit_card_type_master_card"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </RadioGroup>
 
@@ -202,7 +203,6 @@
             android:layout_marginTop="10dp"
             android:background="@color/colorTextHint"
             android:text="@string/text_register" />
-
 
 
         <android.support.v7.widget.AppCompatTextView
