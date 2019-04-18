@@ -132,11 +132,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
-<<<<<<< HEAD
         String url = "http://0dbe105c.ngrok.io/login";
-=======
-        String url = "http://63088cf3.ngrok.io/login";
->>>>>>> master
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
                     @Override

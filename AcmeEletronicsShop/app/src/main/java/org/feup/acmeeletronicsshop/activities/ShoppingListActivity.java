@@ -112,7 +112,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 //TODO SERVER : ponto 4 do enunciado
 
                 //TODO Receive the token (UUID)
-                //TODO Create a transaction
+                //TODO Create a transaction\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
                 //TODO Generate a QR CODE with the token
                 String token = "AAA";
 
@@ -354,7 +354,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
         String user_id = "7";
 
-<<<<<<< HEAD
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
              user_id = extras.getString("user_id");
@@ -365,9 +364,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         Log.d("URL", user_id);
 
         String url = "http://0dbe105c.ngrok.io/shoppinglist/" + user_id;
-=======
-        String url = "http://63088cf3.ngrok.io/shoppinglist/5";
->>>>>>> master
+
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
