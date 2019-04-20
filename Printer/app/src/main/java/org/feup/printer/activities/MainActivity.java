@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,17 +28,21 @@ public class MainActivity extends AppCompatActivity {
                 scan();
             }
         });
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     public void scan() {
-        try {
-            Intent intent = new Intent(ACTION_SCAN);
-            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-            startActivityForResult(intent, 0);
-        }
-        catch (ActivityNotFoundException anfe) {
-            showDialog(this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
-        }
+        Intent intent = new Intent();
+        intent.setClass(this, InvoiceActivity.class);
+        startActivity(intent);
+//        try {
+//            Intent intent = new Intent(ACTION_SCAN);
+//            intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+//            startActivityForResult(intent, 0);
+//        }
+//        catch (ActivityNotFoundException anfe) {
+//            showDialog(this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+//        }
     }
 
     private static AlertDialog showDialog(final Activity act, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {

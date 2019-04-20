@@ -1,6 +1,7 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //getSupportActionBar().hide();
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         initViews();
         initListeners();

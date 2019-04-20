@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Printer</string>
     <string name="text_scan_qr_code">Scan QR Code</string>
+    <string name="text_user_info">User Information</string>
+
+    <string name="text_name">Name:</string>
+    <string name="text_address">Address:</string>
+    <string name="text_email">Email:</string>
+    <string name="text_fiscal_number">Fiscal Number:</string>
+    <string name="text_products">Products List</string>
+
+    <string name="transaction_item_name">Name</string>
+    <string name="transaction_item_quantity">Quantity</string>
+    <string name="menu_item_scan">Scan</string>
 </resources>
