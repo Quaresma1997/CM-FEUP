@@ -40,27 +40,51 @@ router.post("/login", (req, res) => {
         password: md5(req.body.password)
     }
 
+    var newUser;
+
     db.get('SELECT * FROM User WHERE email = ? AND password = ?', [data.email, data.password], function (err, user) {
         if (err) {
             res.status(400).json({ "error": err.message });
             return;
-        }    
-        
+        }
+
+
         if(user == undefined){
             res.json({
                 "message": "No user found...",
-                "data": user    
+                "data": user
             })
         }
         else{
-            res.json({
-                "message": "Success",
-                "data": user    
-            })  
+          myFunction(user, res);
         }
 
     })
+
+
 })
+
+function myFunction(user, res) {
+  db.get('SELECT * FROM CreditCard WHERE idUser = ?', [user.idUser], function(err, credit){
+    if (err) {
+        res.status(400).json({ "error": err.message });
+        return;
+    }
+
+    if(credit == undefined){
+      res.json({
+          "message": "No credit found...",
+          "data": credit
+      })
+    }else{
+      res.json({
+          "message": "Success",
+          "data": user,
+          "creditCard": credit
+      })
+    }
+  })
+}
 
 router.post("/register", (req, res, next) => {
     var errors = []
@@ -102,7 +126,7 @@ router.post("/register", (req, res, next) => {
                 return console.error(err.message);
             }
             console.log(row.idUser);
-            
+
             var cardParams = [data.cardType, data.cardNumber, data.cardExpiration, row.idUser]
             db.run('INSERT INTO CreditCard (type, number, validity, idUser) VALUES (?,?,?,?)', cardParams, function (err, result) {
                 if (err) {
@@ -117,8 +141,8 @@ router.post("/register", (req, res, next) => {
             });
         });
 
-       
-       
+
+
     });
 
 })

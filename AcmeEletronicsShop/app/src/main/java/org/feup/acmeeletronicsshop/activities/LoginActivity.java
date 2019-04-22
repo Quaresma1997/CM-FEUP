@@ -1,7 +1,9 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.Debug;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -20,16 +22,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.InputValidation;
 import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
+import org.feup.acmeeletronicsshop.helpers.Utils;
 import org.feup.acmeeletronicsshop.model.User;
-import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final AppCompatActivity activity = LoginActivity.this;
 
@@ -46,17 +49,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private AppCompatTextView textViewLinkRegister;
 
     private InputValidation inputValidation;
-    private DatabaseHelper databaseHelper;
 
     private RequestQueue queue;
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //getSupportActionBar().hide();
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+
+        SharedPreferences mPrefs = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+        user = null;
+
+        Gson gson = new Gson();
+        String json = mPrefs.getString("currentUser", "");
+
+        if (!json.equals("")) {
+            user = gson.fromJson(json, User.class);
+            Intent intent = new Intent(LoginActivity.this, ShoppingListActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("user", user);
+            intent.putExtras(b);
+            startActivity(intent);
+
+            finish();
+        }
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         initViews();
@@ -95,7 +117,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * This method is to initialize objects to be used
      */
     private void initObjects() {
-        databaseHelper = new DatabaseHelper(activity);
         inputValidation = new InputValidation(activity);
 
     }
@@ -109,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.appCompatButtonLogin:
-                Log.d("ENTREI", "entrei");
+
                 //verifyFromSQLite();
                 loginAPI();
                 break;
@@ -125,16 +146,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginAPI() {
         JSONObject json = new JSONObject();
         try {
-
-            json.put("email", textInputEditTextEmail.getText().toString());
-            json.put("password",textInputEditTextPassword.getText().toString());
+            String email = "", password = "";
+            email = textInputEditTextEmail.getText().toString();
+            password = textInputEditTextPassword.getText().toString();
+            json.put("email", email);
+            json.put("password", password);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-
-        String url = "http://b920c440.ngrok.io/login";
+        String url = Utils.url + "/login";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json,
                 new Response.Listener<JSONObject>() {
@@ -142,22 +164,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResponse(JSONObject response) {
 
                         try {
-                            Log.d("RESPONSE", "String Response : "+ response.get("message").toString());
-                            if((response.get("message").toString()).equals("Success")) {
+                            Log.d("RESPONSE", "String Response : " + response.get("message").toString());
+                            if ((response.get("message").toString()).equals("Success")) {
 
                                 Toast.makeText(getApplicationContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
-                                User user = new User();
-                                user.setName(response.getJSONObject("data").getString("name"));
-                                user.setId(response.getJSONObject("data").getInt("idUser"));
-                                // Launch login activity
+                                JSONObject data = response.getJSONObject("data");
+                                JSONObject creditCard = response.getJSONObject("creditCard");
+                                Log.d("AAA", creditCard.toString());
+                                User user = new User(data.getString("name"), data.getString("address"), data.getString("email"),
+                                        data.getString("password"), data.getString("fiscalNumber"), data.getString("publicKey"),
+                                        creditCard.getString("number"), creditCard.getString("type"),
+                                        creditCard.getString("validity"));
+                                user.setId(data.getInt("idUser"));
+                                SharedPreferences mPrefs = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+                                user.setPrivateKey(mPrefs.getString(user.getId() + "", ""));
+                                    // Launch login activity
+                                saveUser(user);
                                 Intent intent = new Intent(LoginActivity.this, ShoppingListActivity.class);
+                                emptyInputEditText();
                                 Bundle b = new Bundle();
                                 b.putSerializable("user", user);
                                 intent.putExtras(b);
                                 startActivity(intent);
+
                                 finish();
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(getApplicationContext(), "Wrong email or password.", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
@@ -175,10 +206,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void saveUser(User user) {
+        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+        // Writing data to SharedPreferences
+        SharedPreferences.Editor prefsEditor = settings.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        prefsEditor.putString("currentUser", json);
+        prefsEditor.apply();
+
+    }
+
+
     /**
      * This method is to validate the input text fields and verify login credentials from SQLite
      */
-    private void verifyFromSQLite() {
+   /* private void verifyFromSQLite() {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return;
         }
@@ -203,7 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Snack Bar to show success message that record is wrong
             Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
         }
-    }
+    }*/
 
     /**
      * This method is to empty all input edit text

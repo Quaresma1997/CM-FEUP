@@ -12,4 +12,8 @@
     <string name="transaction_item_name">Name</string>
     <string name="transaction_item_quantity">Quantity</string>
     <string name="menu_item_scan">Scan</string>
+    <string name="text_invoice_info">Invoice info</string>
+    <string name="text_invoice_uuid">UUID:</string>
+    <string name="text_invoice_date">Date:</string>
+    <string name="text_invoice_total">Total Cost:</string>
 </resources>

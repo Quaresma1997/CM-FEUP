@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/nav_header"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="120dp"
     android:background="@color/colorAccent"
     android:clickable="true"
     android:focusable="true"
     android:gravity="bottom"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
@@ -18,10 +18,11 @@
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/nav_header_textView"
+        android:id="@+id/txtDrawerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
         android:paddingTop="16dp"
-        android:text="Chike Mgbemena"
+        android:textColor="@color/black"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>

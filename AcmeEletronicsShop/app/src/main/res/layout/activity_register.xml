@@ -169,7 +169,8 @@
                 android:text="@string/credit_card_type_visa"
                 android:textColor="@android:color/white"
                 android:layout_marginEnd="10dp"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:checked="true"/>
             <RadioButton
                 android:id="@+id/rdButtonInputCreditCardTypeMasterCard"
                 android:layout_width="wrap_content"

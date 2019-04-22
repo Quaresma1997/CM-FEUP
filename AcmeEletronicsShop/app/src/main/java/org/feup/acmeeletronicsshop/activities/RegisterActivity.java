@@ -1,8 +1,8 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -22,42 +22,30 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.InputValidation;
 import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
+import org.feup.acmeeletronicsshop.helpers.Utils;
 import org.feup.acmeeletronicsshop.model.User;
-import org.feup.acmeeletronicsshop.server.API;
-import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final AppCompatActivity activity = RegisterActivity.this;
 
-    private API api = new API();
     private User user;
 
     private NestedScrollView nestedScrollView;
-
-    private TextInputLayout textInputLayoutName;
-    private TextInputLayout textInputLayoutEmail;
-    private TextInputLayout textInputLayoutPassword;
-    private TextInputLayout textInputLayoutConfirmPassword;
 
     private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextEmail;
@@ -74,9 +62,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private AppCompatTextView appCompatTextViewLoginLink;
 
     private InputValidation inputValidation;
-    private DatabaseHelper databaseHelper;
-
-    private String url;
 
     private RequestQueue queue;
 
@@ -85,9 +70,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 //        getSupportActionBar().hide();
-
-        url = "http://b920c440.ngrok.io";
-
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -102,11 +84,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     private void initViews() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
-
-        textInputLayoutName = (TextInputLayout) findViewById(R.id.textInputLayoutName);
-        textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
-        textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
-        textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
 
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
@@ -140,7 +117,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     private void initObjects() {
         inputValidation = new InputValidation(activity);
-        databaseHelper = new DatabaseHelper(activity);
         user = new User();
 
     }
@@ -157,7 +133,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.appCompatButtonRegister:
                 submitForm();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                //postDataToSQLite();
                 break;
 
             case R.id.appCompatTextViewLoginLink:
@@ -184,9 +159,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
          */
 
 
-
-
-
         //final RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
 
         KeyPairGenerator keyPairGenerator = null;
@@ -202,18 +174,26 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         KeyPair pair = keyPairGenerator.generateKeyPair();
         final PrivateKey priv = pair.getPrivate();
         final PublicKey pub = pair.getPublic();
+        final String name = textInputEditTextName.getText().toString();
+        final String password = textInputEditTextPassword.getText().toString();
+        final String address = textInputEditTextAddress.getText().toString();
+        final String email = textInputEditTextEmail.getText().toString();
+        final String fiscalNumber = textInputEditTextFiscalNumber.getText().toString();
+        final String cardNumber = textInputEditTextCreditCardNumber.getText().toString();
+        final String cardExpiration = textInputEditTextCreditCardValidity.getText().toString();
+
 
         JSONObject json = new JSONObject();
         try {
-            json.put("name",textInputEditTextName.getText().toString());
-            json.put("email", textInputEditTextEmail.getText().toString());
-            json.put("password",textInputEditTextConfirmPassword.getText().toString());
-            json.put("address",textInputEditTextAddress.getText().toString());
-            json.put("fiscalNumber",textInputEditTextFiscalNumber.getText().toString());
+            json.put("name", name);
+            json.put("email", email);
+            json.put("password",password);
+            json.put("address",address);
+            json.put("fiscalNumber",fiscalNumber);
             json.put("publicKey",pub.toString());
             json.put("cardType",type);
-            json.put("cardNumber", textInputEditTextCreditCardNumber.getText().toString());
-            json.put("cardExpiration", textInputEditTextCreditCardValidity.getText().toString());
+            json.put("cardNumber", cardNumber);
+            json.put("cardExpiration", cardExpiration);
 
 
 
@@ -222,7 +202,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        String register_url = url + "/register";
+        String register_url = Utils.url + "/register";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, register_url, json,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -235,8 +215,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                             if(response.get("message").equals("User and card successfully added")){
                                 Toast.makeText(getApplicationContext(), "Welcome! You're signed in!", Toast.LENGTH_SHORT).show();
-                                user = new User(textInputEditTextName.getText().toString(), textInputEditTextAddress.getText().toString(), textInputEditTextEmail.getText().toString(), textInputEditTextConfirmPassword.getText().toString(), textInputEditTextFiscalNumber.getText().toString(), pub.toString(), priv.toString(), textInputEditTextCreditCardNumber.getText().toString(), type, textInputEditTextCreditCardValidity.getText().toString());
+                                user = new User(name, address, email, password, fiscalNumber, pub.toString(), priv.toString(), cardNumber, type, cardExpiration);
                                 user.setId(response.getInt("id"));
+                                saveUser(user);
                                 Intent intent = new Intent(RegisterActivity.this, ShoppingListActivity.class);
                                 Bundle b = new Bundle();
                                 b.putSerializable("user", user);
@@ -262,6 +243,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
 
         queue.add(jsonObjectRequest);
+
+    }
+
+    private void saveUser(User user){
+        SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+        // Writing data to SharedPreferences
+        SharedPreferences.Editor prefsEditor = settings.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+        Log.d("AAAA", json);
+        prefsEditor.putString("currentUser", json);
+        prefsEditor.putString(user.getId() + "", user.getPrivateKey());
+        prefsEditor.apply();
 
     }
 
@@ -405,5 +400,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputEditTextEmail.setText(null);
         textInputEditTextPassword.setText(null);
         textInputEditTextConfirmPassword.setText(null);
+        textInputEditTextAddress.setText(null);
+        textInputEditTextCreditCardNumber.setText(null);
+        textInputEditTextFiscalNumber.setText(null);
+        textInputEditTextCreditCardValidity.setText(null);
     }
 }

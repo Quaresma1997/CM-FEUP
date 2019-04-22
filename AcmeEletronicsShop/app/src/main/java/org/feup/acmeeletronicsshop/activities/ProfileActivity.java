@@ -1,6 +1,7 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -15,16 +16,18 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import org.feup.acmeeletronicsshop.R;
+import org.feup.acmeeletronicsshop.helpers.Utils;
 import org.feup.acmeeletronicsshop.model.User;
 
-public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    User user;
+    AppCompatTextView txtName, txtEmail, txtAddress, txtFiscalNumber;
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
-    User user;
-    AppCompatTextView txtName, txtEmail, txtAddress, txtFiscalNumber;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(true);
         drawer.setDrawerListener(toggle);
-        if(getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
@@ -81,9 +84,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     // handle button activities
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-       if (toggle.onOptionsItemSelected(item)) {
+        if (toggle.onOptionsItemSelected(item)) {
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -98,12 +100,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    public boolean onNavigationItemSelected(MenuItem item){
+    public boolean onNavigationItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()){
-            case  R.id.nav_item_profile:
+        switch (item.getItemId()) {
+            case R.id.nav_item_profile:
                 break;
-            case  R.id.nav_item_shopping_list:
+            case R.id.nav_item_shopping_list:
                 intent = new Intent(this, ShoppingListActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("user", user);
@@ -111,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 finish();
                 break;
-            case  R.id.nav_item_history:
+            case R.id.nav_item_history:
                 intent = new Intent(this, TransactionHistoryActivity.class);
                 Bundle b2 = new Bundle();
                 b2.putSerializable("user", user);
@@ -119,7 +121,17 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 finish();
                 break;
-            case  R.id.nav_item_logout:
+            case R.id.nav_item_logout:
+                SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+                // Writing data to SharedPreferences
+                SharedPreferences.Editor prefsEditor = settings.edit();
+                prefsEditor.putString("currentUser", "");
+                prefsEditor.apply();
+
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;

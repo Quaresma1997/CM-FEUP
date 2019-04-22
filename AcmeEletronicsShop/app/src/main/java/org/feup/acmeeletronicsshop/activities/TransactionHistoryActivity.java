@@ -1,6 +1,7 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import org.feup.acmeeletronicsshop.R;
+import org.feup.acmeeletronicsshop.helpers.Utils;
 import org.feup.acmeeletronicsshop.model.User;
 
 public class TransactionHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -80,9 +83,8 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
     // handle button activities
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
         if (toggle.onOptionsItemSelected(item)) {
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -90,15 +92,19 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
 
     public boolean onNavigationItemSelected(MenuItem item){
         Intent intent;
+        Bundle b;
         switch (item.getItemId()){
             case  R.id.nav_item_profile:
                 intent = new Intent(this, ProfileActivity.class);
+                b = new Bundle();
+                b.putSerializable("user", user);
+                intent.putExtras(b);
                 startActivity(intent);
                 finish();
                 break;
             case  R.id.nav_item_shopping_list:
                 intent = new Intent(this, ShoppingListActivity.class);
-                Bundle b = new Bundle();
+                b = new Bundle();
                 b.putSerializable("user", user);
                 intent.putExtras(b);
                 startActivity(intent);
@@ -107,6 +113,16 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
             case  R.id.nav_item_history:
                 break;
             case  R.id.nav_item_logout:
+                SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+                // Writing data to SharedPreferences
+                SharedPreferences.Editor prefsEditor = settings.edit();
+                prefsEditor.putString("currentUser", "");
+                prefsEditor.apply();
+
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;

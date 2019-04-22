@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -31,13 +32,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -46,9 +48,9 @@ import com.google.zxing.common.BitMatrix;
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.adapters.ProductsRecyclerAdapter;
 import org.feup.acmeeletronicsshop.helpers.RequestQueueSingleton;
+import org.feup.acmeeletronicsshop.helpers.Utils;
 import org.feup.acmeeletronicsshop.model.Product;
 import org.feup.acmeeletronicsshop.model.User;
-import org.feup.acmeeletronicsshop.sql.DatabaseHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -167,11 +169,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         qrCodeDialog.setContentView(R.layout.qrcodedialog);
         qrCodeDialog.setTitle("Generated QR Code");
 
-
-
-
-
-
         Thread t = new Thread(new Runnable() {    // convert in a separate thread to avoid possible ANR
             public void run() {
                 final Bitmap bitmap;
@@ -244,17 +241,16 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         recyclerViewProducts.setAdapter(productsRecyclerAdapter);
 
         getProducts();
-//        databaseHelper = new DatabaseHelper(activity);
-
-//        String emailFromIntent = getIntent().getStringExtra("EMAIL");
-//        textViewName.setText(emailFromIntent);
-
-//        getDataFromSQLite();
     }
 
     private void initDrawer() {
 
         drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navView = findViewById(R.id.nav_view);
+        View mHeaderView = navView.getHeaderView(0);
+        TextView txtDrawerName = (TextView) mHeaderView.findViewById(R.id.txtDrawerName);
+        txtDrawerName.setText(user.getName());
 
         toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(true);
@@ -271,7 +267,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
         }
     }
 
@@ -287,11 +283,12 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     public boolean onNavigationItemSelected(MenuItem item){
         Intent intent;
+        Bundle b;
         switch (item.getItemId()){
             case  R.id.nav_item_profile:
 
                 intent = new Intent(this, ProfileActivity.class);
-                Bundle b = new Bundle();
+                b = new Bundle();
                 b.putSerializable("user", user);
                 intent.putExtras(b);
                 startActivity(intent);
@@ -300,11 +297,24 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             case  R.id.nav_item_shopping_list:
                 break;
             case  R.id.nav_item_history:
-                intent = new Intent(this, TransactionHistoryActivity.class);
+                intent = new Intent(this, ProfileActivity.class);
+                b = new Bundle();
+                b.putSerializable("user", user);
+                intent.putExtras(b);
                 startActivity(intent);
                 finish();
                 break;
             case  R.id.nav_item_logout:
+                SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
+
+                // Writing data to SharedPreferences
+                SharedPreferences.Editor prefsEditor = settings.edit();
+                prefsEditor.putString("currentUser", "");
+                prefsEditor.apply();
+
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;
@@ -365,6 +375,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         if (id == R.id.btnAdd) {
             scan();
         }else if (toggle.onOptionsItemSelected(item)) {
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -377,7 +388,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         //DEBUGGING
         Log.d("NAME", "some" + user.getName() + "thing");
 
-        String url = "http://b920c440.ngrok.io/shoppinglist/" + user.getId();
+        String url = Utils.url + "/shoppinglist/" + user.getId();
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {

@@ -69,8 +69,8 @@ INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, idProduct, idShoppingList) VALUES (10, 1, 1);
 
 
-INSERT INTO Transactions (day, idUser, total, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a') VALUES ('2019-03-21', 1);
-INSERT INTO Transactions (day, idUser, total, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d') VALUES ('2019-03-25', 1);
+INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-21', 1, 10, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');
+INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-25', 1, 20, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d');
 INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (10, 1, 1);
 INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (7, 2, 1);
 INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (2, 2, 2);
