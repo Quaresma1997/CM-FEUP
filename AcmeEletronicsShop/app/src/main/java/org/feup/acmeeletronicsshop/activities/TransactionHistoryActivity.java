@@ -15,7 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import org.feup.acmeeletronicsshop.R;
 import org.feup.acmeeletronicsshop.helpers.Utils;
@@ -48,6 +50,11 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
     private void initDrawer() {
 
         drawer = findViewById(R.id.drawer_layout);
+
+        NavigationView navView = findViewById(R.id.nav_view);
+        View mHeaderView = navView.getHeaderView(0);
+        TextView txtDrawerName = (TextView) mHeaderView.findViewById(R.id.txtDrawerName);
+        txtDrawerName.setText(user.getName());
 
         toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.setDrawerIndicatorEnabled(true);
