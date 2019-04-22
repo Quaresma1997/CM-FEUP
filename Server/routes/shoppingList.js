@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database/database.db');
-var md5 = require("md5")
 
 router.get("/:idUser", (req, res, next) => {
     const stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.idProduct = ShoppingListItem.idProduct');

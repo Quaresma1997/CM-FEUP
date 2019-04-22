@@ -14,11 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.feup.acmeeletronicsshop.R;
+import org.feup.acmeeletronicsshop.model.User;
 
 public class TransactionHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    User user;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,8 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+
+        user = (User) getIntent().getSerializableExtra("user");
 
         initDrawer();
 
@@ -83,6 +87,9 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
                 break;
             case  R.id.nav_item_shopping_list:
                 intent = new Intent(this, ShoppingListActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("user", user);
+                intent.putExtras(b);
                 startActivity(intent);
                 finish();
                 break;

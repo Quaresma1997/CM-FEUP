@@ -233,11 +233,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     private void initObjects() {
         listProducts = new ArrayList<>();
 
-
-        if(listProducts.size() == 0){
-            Log.d("ITNULL", "no product");
-        }
-
         productsRecyclerAdapter = new ProductsRecyclerAdapter(listProducts);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -285,6 +280,9 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             case  R.id.nav_item_profile:
 
                 intent = new Intent(this, ProfileActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("user", user);
+                intent.putExtras(b);
                 startActivity(intent);
                 finish();
                 break;

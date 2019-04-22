@@ -12,10 +12,12 @@ var HTTP_PORT = 8000
 var auth = require('./routes/auth');
 var shoppingList = require('./routes/shoppingList');
 var product = require('./routes/product');
+var transaction = require('./routes/transaction');
 
 app.use('/', auth);
 app.use('/shoppingList', shoppingList);
 app.use('/products', product);
+app.use('/transaction', transaction);
 
 // Start server
 app.listen(HTTP_PORT, () => {
