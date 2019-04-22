@@ -1,6 +1,7 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -89,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
         queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         initViews();
         initListeners();

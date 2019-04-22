@@ -25,7 +25,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/transaction_item_name"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
                 android:textSize="22sp"/>
 
             <android.support.v7.widget.AppCompatTextView
@@ -33,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:textColor="@color/gray"
+                android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -47,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/transaction_item_quantity"
                 android:layout_marginEnd="10dp"
-                android:textColor="@color/black"
                 android:textSize="18sp"/>
 
             <android.support.v7.widget.AppCompatTextView

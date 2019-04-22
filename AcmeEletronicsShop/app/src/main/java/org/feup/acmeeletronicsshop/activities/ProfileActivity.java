@@ -1,10 +1,12 @@
 package org.feup.acmeeletronicsshop.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -49,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         NavigationView navView = findViewById(R.id.nav_view);
         navView.bringToFront();
         navView.setNavigationItemSelectedListener(this);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void initDrawer() {
@@ -85,6 +87,15 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public boolean onNavigationItemSelected(MenuItem item){
