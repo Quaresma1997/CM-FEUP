@@ -63,8 +63,8 @@ CREATE TABLE TransactionItem(
 );
 
 INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', '1234', '123456789', 'Rua Teste', 'chave_publica');
-INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model', 'maker', 'red', 10, 61234567890, 'description');
-INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model2', 'maker2', 'yellow', 70, 12853478357, 'description2');
+INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model', 'maker', 'red', 10, 612345678907, 'description');
+INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model2', 'maker2', 'yellow', 70, 128534783579, 'description2');
 INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, idProduct, idShoppingList) VALUES (10, 1, 1);
 

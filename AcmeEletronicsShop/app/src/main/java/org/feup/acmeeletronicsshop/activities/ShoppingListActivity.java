@@ -79,6 +79,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     User user;
 
+    RequestQueue queue;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +102,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         navView.setNavigationItemSelectedListener(this);
 
         user = (User) getIntent().getSerializableExtra("user");
+
+        queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         initViews();
         initObjects();
@@ -355,6 +359,45 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             if (resultCode == RESULT_OK) {
                 String product_barcode = data.getStringExtra("SCAN_RESULT");
                 //TODO Add product to the productListView
+
+                String url = Utils.url + "/products/" + product_barcode;
+
+                Log.d("URL", url);
+
+                JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                                try {
+                                    Log.d("PRODUCTS", "String Response : "+ response.toString());
+                                    JSONArray products = response.getJSONArray(12853478357"data");
+                                    JSONObject product = products.getJSONObject(0);
+                                    int id = product.getInt("idProduct");
+                                    String name = "name";
+                                    String model = product.getString("model");
+                                    String maker = product.getString("maker");
+                                    String color = product.getString("color");
+                                    String description = product.getString("description");
+                                    int price = product.getInt("price");
+                                    listProducts.add(new Product(id, model, model, maker, color, description, price));
+                                    productsRecyclerAdapter.notifyDataSetChanged();
+
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+
+                queue.add(productsRequest);
             }
         }
     }
@@ -383,7 +426,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     public void getProducts() {
 
-        RequestQueue queue = RequestQueueSingleton.getInstance(this.getApplicationContext()).getRequestQueue();
+
 
         //DEBUGGING
         Log.d("NAME", "some" + user.getName() + "thing");
@@ -396,8 +439,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                     public void onResponse(JSONObject response) {
 
                         try {
-                            //DEBUGGING
-                            Log.d("PRODUCTS", "String Response : "+ response.toString());
+
+
                             JSONArray products = response.getJSONArray("products");
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);

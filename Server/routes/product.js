@@ -18,9 +18,9 @@ router.get('', (req,res) => {
     });
 })
 
-router.get('/:idProduct', (req,res) => {
-    var sql = "select * from product where idProduct = ?"
-    var params = [req.params.idProduct]
+router.get('/:barcode', (req,res) => {
+    var sql = "select * from product where barcode = ?"
+    var params = [req.params.barcode]
     db.all(sql, params, (err, rows) => {
         if (err) {
             res.status(400).json({ "error": err.message });

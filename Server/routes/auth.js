@@ -136,7 +136,7 @@ router.post("/register", (req, res, next) => {
                 res.json({
                     "message": "User and card successfully added",
                     "data": data,
-                    "id": this.lastID
+                    "id": row.idUser
                 })
             });
         });
