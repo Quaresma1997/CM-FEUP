@@ -96,8 +96,8 @@ router.get("/add/:idUser/:barcode", (req, res) => {
 	})
 })
 
-router.get("/remove/:idUser/:idProduct", (req, res) => {
-	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.idProduct = ?', [req.params.idUser, req.params.idProduct], function (err, list){
+router.get("/remove/:idUser/:barcode", (req, res) => {
+	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, list){
 		if (err) {
 			res.status(400).json({ "error": err.message })
 			return;
@@ -111,7 +111,7 @@ router.get("/remove/:idUser/:idProduct", (req, res) => {
 			})
 		}
 		else{
-			db.run('DELETE FROM ShoppingListItem WHERE idProduct = ? AND idShoppingList = ?', [req.params.idProduct, list.idShoppingList], function (err, list2){
+			db.run('DELETE FROM ShoppingListItem WHERE barcode = ? AND idShoppingList = ?', [req.params.barcode, list.idShoppingList], function (err, list2){
 				
 				if (err) {
 					res.status(400).json({ "error": err.message })

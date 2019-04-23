@@ -8,11 +8,11 @@ public class Product {
     private String color;
     private String description;
     private int price;
-//    private int barcode;
+    private long barcode;
 
     public Product(){};
 
-    public Product(int id, String name, String model, String maker, String color, String description, int price) {
+    public Product(int id, String name, String model, String maker, String color, String description, int price, long barcode) {
         this.id = id;
         this.name = name;
         this.model = model;
@@ -20,6 +20,7 @@ public class Product {
         this.color = color;
         this.description = description;
         this.price = price;
+        this.barcode = barcode;
     }
 
     public int getId() {
@@ -76,5 +77,13 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public long getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(long barcode) {
+        this.barcode = barcode;
     }
 }

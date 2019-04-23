@@ -31,6 +31,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -96,6 +97,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 openDialog(ShoppingListActivity.this);
             }
         });
+
 
         NavigationView navView = findViewById(R.id.nav_view);
         navView.bringToFront();
@@ -244,6 +246,20 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         recyclerViewProducts.setHasFixedSize(true);
         recyclerViewProducts.setAdapter(productsRecyclerAdapter);
 
+        productsRecyclerAdapter.setOnItemClickListener(new ProductsRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                listProducts.get(position).setName("new one yeah boy");
+                productsRecyclerAdapter.notifyItemChanged(position);
+                Log.d("CLICKED", "");
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                removeItem(position);
+            }
+        });
+
         getProducts();
     }
 
@@ -358,7 +374,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String product_barcode = data.getStringExtra("SCAN_RESULT");
-                //TODO Add product to the productListView
 
                 String url = Utils.url + "/products/" + product_barcode;
 
@@ -379,7 +394,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                     String color = product.getString("color");
                                     String description = product.getString("description");
                                     int price = product.getInt("price");
-                                    listProducts.add(new Product(id, model, model, maker, color, description, price));
+                                    long barcode = product.getLong("barcode");
+                                    listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
                                     productsRecyclerAdapter.notifyDataSetChanged();
 
 
@@ -445,6 +461,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         return super.onOptionsItemSelected(item);
     }
 
+
     public void getProducts() {
 
 
@@ -471,8 +488,9 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 String maker = product.getString("maker");
                                 String color = product.getString("color");
                                 String description = product.getString("description");
+                                long barcode = product.getLong("barcode");
                                 int price = product.getInt("price");
-                                listProducts.add(new Product(id, model, model, maker, color, description, price));
+                                listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
                                 productsRecyclerAdapter.notifyDataSetChanged();
 
                             }
@@ -495,6 +513,37 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
 
         queue.add(productsRequest);
+
+    }
+
+    void removeItem(final int position){
+
+        Log.d("URLAGAIN", " " + listProducts.get(position).getBarcode());
+
+        JsonObjectRequest removeProduct = new JsonObjectRequest(Request.Method.GET, Utils.url + "/shoppingList/remove/" + user.getId() + "/" + listProducts.get(position).getBarcode(), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("PRODUCTS", "String Response : "+ response.toString());
+                        try {
+                            if((response.get("message").toString()).equals("Product deleted!")){
+                                listProducts.remove(position);
+                                productsRecyclerAdapter.notifyItemRemoved(position);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(removeProduct);
+
 
     }
 }
