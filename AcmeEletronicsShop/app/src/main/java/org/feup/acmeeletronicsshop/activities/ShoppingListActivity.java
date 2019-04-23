@@ -362,7 +362,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                 String url = Utils.url + "/products/" + product_barcode;
 
-                Log.d("URL", url);
 
                 JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>() {
@@ -370,8 +369,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                             public void onResponse(JSONObject response) {
 
                                 try {
-                                    Log.d("PRODUCTS", "String Response : "+ response.toString());
-                                    JSONArray products = response.getJSONArray(12853478357"data");
+
+                                    JSONArray products = response.getJSONArray("data");
                                     JSONObject product = products.getJSONObject(0);
                                     int id = product.getInt("idProduct");
                                     String name = "name";
@@ -397,7 +396,29 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 });
 
 
-                queue.add(productsRequest);
+                JsonObjectRequest addProduct = new JsonObjectRequest(Request.Method.GET, Utils.url + "/shoppingList/add/" + user.getId() + "/" + product_barcode, null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d("PRODUCTS", "String Response : "+ response.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+                queue.add(addProduct);
+
+
+                if(!addProduct.isCanceled()){
+                    Log.d("entered product!", "");
+                    queue.add(productsRequest);
+                }
+
+
+
             }
         }
     }

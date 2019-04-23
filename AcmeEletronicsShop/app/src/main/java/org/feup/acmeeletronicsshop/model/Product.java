@@ -10,6 +10,8 @@ public class Product {
     private int price;
 //    private int barcode;
 
+    public Product(){};
+
     public Product(int id, String name, String model, String maker, String color, String description, int price) {
         this.id = id;
         this.name = name;

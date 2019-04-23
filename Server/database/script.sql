@@ -42,7 +42,7 @@ CREATE TABLE ShoppingList(
 CREATE TABLE ShoppingListItem(
     idShoppingListItem INTEGER PRIMARY KEY,
     quantity INTEGER NOT NULL,
-    idProduct INTEGER REFERENCES Product(idProduct),
+    barcode INTEGER REFERENCES Product(barcode),
             idShoppingList INTEGER REFERENCES ShoppingList(idShoppingList)
 );
 
@@ -66,7 +66,7 @@ INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUE
 INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model', 'maker', 'red', 10, 612345678907, 'description');
 INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model2', 'maker2', 'yellow', 70, 128534783579, 'description2');
 INSERT INTO ShoppingList (idUser) VALUES (1);
-INSERT INTO ShoppingListItem (quantity, idProduct, idShoppingList) VALUES (10, 1, 1);
+INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612345678907, 1);
 
 
 INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-21', 1, 10, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');

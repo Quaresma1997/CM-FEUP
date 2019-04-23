@@ -4,7 +4,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database/database.db');
 
 router.get("/:idUser", (req, res, next) => {
-    const stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.idProduct = ShoppingListItem.idProduct');
+    const stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode');
 	console.log(req.params.idUser);
 	stmt.all(req.params.idUser, (err, rows) => {
 		if (rows != undefined && rows != null) {
@@ -16,7 +16,7 @@ router.get("/:idUser", (req, res, next) => {
     });
 })
 
-router.get("/add/:idUser/:idProduct", (req, res) => {
+router.get("/add/:idUser/:barcode", (req, res) => {
 	//check if user has a shoppinglist
 	db.get('SELECT * FROM ShoppingList WHERE idUser = ?', [req.params.idUser], function(err, list){
 		if (err) {
@@ -43,7 +43,7 @@ router.get("/add/:idUser/:idProduct", (req, res) => {
 				}
 
 				//add product as a shopping list item
-				db.run('insert into ShoppingListItem (quantity, idProduct, idShoppingList) values (?,?,?)', [1, req.params.idProduct, row2.idShoppingList], function(err){
+				db.run('insert into ShoppingListItem (quantity, barcode, idShoppingList) values (?,?,?)', [1, req.params.barcode, row2.idShoppingList], function(err){
 					if (err) {
 						res.status(400).json({ "error": err.message })
 						return;
@@ -59,14 +59,14 @@ router.get("/add/:idUser/:idProduct", (req, res) => {
 		}
 		else{
 			if(list.idUser == req.params.idUser){
-				db.get('select * from ShoppingListItem where idShoppingList = ? AND idProduct = ?', [list.idShoppingList, req.params.idProduct], function(err, row3){
+				db.get('select * from ShoppingListItem where idShoppingList = ? AND barcode = ?', [list.idShoppingList, req.params.barcode], function(err, row3){
 					if (err) {
 						res.status(400).json({ "error": err.message })
 						return;
 					}
 					
 					if(row3 == undefined){
-						db.run('insert into ShoppingListItem (quantity, idProduct, idShoppingList) values (?,?,?)', [1, req.params.idProduct, list.idShoppingList], function(err){
+						db.run('insert into ShoppingListItem (quantity, barcode, idShoppingList) values (?,?,?)', [1, req.params.barcode, list.idShoppingList], function(err){
 							if (err) {
 								res.status(400).json({ "error": err.message })
 								return;
