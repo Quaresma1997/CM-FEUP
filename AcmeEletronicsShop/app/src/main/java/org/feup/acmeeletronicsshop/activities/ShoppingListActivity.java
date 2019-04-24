@@ -317,7 +317,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             case  R.id.nav_item_shopping_list:
                 break;
             case  R.id.nav_item_history:
-                intent = new Intent(this, ProfileActivity.class);
+                intent = new Intent(this, TransactionHistoryActivity.class);
                 b = new Bundle();
                 b.putSerializable("user", user);
                 intent.putExtras(b);
