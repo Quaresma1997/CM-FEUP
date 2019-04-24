@@ -32,20 +32,28 @@
                 android:text="BBB"
                 android:textSize="22sp"
                 android:textColor="@android:color/black" />
-            <EditText
-                android:id="@+id/editTextQuantity"
-                android:layout_width="0dp"
+
+            <ImageButton
+                android:id="@+id/btnAddQuantity"
+                android:layout_width="5dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                card_view:srcCompat="@drawable/add_quantity" />
+
+            <EditText
+                android:id="@+id/editTextQuantity"
+                android:layout_width="5dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/hint_quantity_product"
+                android:layout_weight="1"
                 android:ems="3"
-                android:maxLength="3"
+                android:hint="@string/hint_quantity_product"
                 android:inputType="text"
-                android:textSize="22sp"
-                android:textCursorDrawable="@null"
+                android:maxLength="3"
+                android:textColor="@android:color/black"
                 android:textColorHint="@color/gray"
-                android:textColor="@android:color/black"/>
+                android:textCursorDrawable="@null"
+                android:textSize="22sp" />
 
 
 

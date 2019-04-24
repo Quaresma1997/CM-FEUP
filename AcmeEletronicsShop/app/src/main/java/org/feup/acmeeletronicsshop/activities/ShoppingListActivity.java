@@ -248,15 +248,16 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
         productsRecyclerAdapter.setOnItemClickListener(new ProductsRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                listProducts.get(position).setName("new one yeah boy");
-                productsRecyclerAdapter.notifyItemChanged(position);
-                Log.d("CLICKED", "");
-            }
+            public void onItemClick(int position) {}
 
             @Override
             public void onDeleteClick(int position) {
                 removeItem(position);
+            }
+
+            @Override
+            public void onAddQuantity(int position) {
+
             }
         });
 
@@ -378,7 +379,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 String url = Utils.url + "/products/" + product_barcode;
 
 
-                JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                final JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
@@ -397,7 +398,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                     long barcode = product.getLong("barcode");
                                     listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
                                     productsRecyclerAdapter.notifyDataSetChanged();
-
+                                    updateTotal();
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -417,6 +418,13 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                             @Override
                             public void onResponse(JSONObject response) {
                                 Log.d("PRODUCTS", "String Response : "+ response.toString());
+                                try {
+                                    if(!response.getString("message").equals("Product already listed...")){
+                                        queue.add(productsRequest);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -428,10 +436,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 queue.add(addProduct);
 
 
-                if(!addProduct.isCanceled()){
-                    Log.d("entered product!", "");
-                    queue.add(productsRequest);
-                }
+
 
 
 
@@ -487,6 +492,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 int price = product.getInt("price");
                                 listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
                                 productsRecyclerAdapter.notifyDataSetChanged();
+                                updateTotal();
 
                             }
                             //DEBUGGING
@@ -521,7 +527,9 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                         try {
                             if((response.get("message").toString()).equals("Product deleted!")){
                                 listProducts.remove(position);
-                                productsRecyclerAdapter.notifyItemRemoved(position);
+                                //productsRecyclerAdapter.notifyItemRemoved(position);
+                                productsRecyclerAdapter.notifyDataSetChanged();
+                                updateTotal();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -538,5 +546,17 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         queue.add(removeProduct);
 
 
+    }
+
+    void updateTotal(){
+        TextView total = (TextView) findViewById(R.id.textViewTotal);
+        int totalPrice = 0;
+
+        for(int i = 0; i < listProducts.size(); i++){
+            totalPrice += listProducts.get(i).getPrice();
+        }
+
+
+        total.setText(" " + totalPrice + "€");
     }
 }

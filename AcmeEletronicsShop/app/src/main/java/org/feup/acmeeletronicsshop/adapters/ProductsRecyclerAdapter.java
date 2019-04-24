@@ -24,6 +24,7 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onDeleteClick(int position);
+        void onAddQuantity(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -57,10 +58,6 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         return listProducts.size();
     }
 
-
-
-
-
     /**
      * ViewHolder class
      */
@@ -70,6 +67,7 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         public AppCompatTextView textViewPrice;
         public EditText editTextQuantity;
         public ImageButton btnRemoveProduct;
+        public ImageButton btnAddQuantity;
 
         public ProductViewHolder(View view) {
             super(view);
@@ -77,6 +75,7 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
             textViewPrice = (AppCompatTextView) view.findViewById(R.id.textViewPrice);
             editTextQuantity = (EditText) view.findViewById(R.id.editTextQuantity);
             btnRemoveProduct = (ImageButton) view.findViewById(R.id.btnRemoveProduct);
+            btnAddQuantity = (ImageButton) view.findViewById(R.id.btnAddQuantity);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,6 +97,18 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
                             mListener.onDeleteClick(position);
+                        }
+                    }
+                }
+            });
+
+            btnAddQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mListener.onAddQuantity(position);
                         }
                     }
                 }
