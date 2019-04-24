@@ -47,6 +47,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private NestedScrollView nestedScrollView;
 
+    private TextInputLayout textInputLayoutName;
+    private TextInputLayout textInputLayoutEmail;
+    private TextInputLayout textInputLayoutPassword;
+    private TextInputLayout textInputLayoutConfirmPassword;
+    private TextInputLayout textInputLayoutFiscalNumber;
+    private TextInputLayout textInputLayoutAddress;
+    private TextInputLayout textInputLayoutCreditCardNumber;
+    private TextInputLayout textInputLayoutCreditCardValidity;
+
+
     private TextInputEditText textInputEditTextName;
     private TextInputEditText textInputEditTextEmail;
     private TextInputEditText textInputEditTextPassword;
@@ -84,6 +94,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     private void initViews() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.nestedScrollView);
+
+        textInputLayoutName = (TextInputLayout) findViewById(R.id.textInputLayoutName);
+        textInputLayoutEmail = (TextInputLayout) findViewById(R.id.textInputLayoutEmail);
+        textInputLayoutPassword = (TextInputLayout) findViewById(R.id.textInputLayoutPassword);
+        textInputLayoutConfirmPassword = (TextInputLayout) findViewById(R.id.textInputLayoutConfirmPassword);
+        textInputLayoutFiscalNumber = (TextInputLayout) findViewById(R.id.textInputLayoutFiscalNumber);
+        textInputLayoutAddress = (TextInputLayout) findViewById(R.id.textInputLayoutAddress);
+        textInputLayoutCreditCardNumber = (TextInputLayout) findViewById(R.id.textInputLayoutCreditCardNumber);
+        textInputLayoutCreditCardValidity = (TextInputLayout) findViewById(R.id.textInputLayoutCreditCardValidity);
 
         textInputEditTextName = (TextInputEditText) findViewById(R.id.textInputEditTextName);
         textInputEditTextEmail = (TextInputEditText) findViewById(R.id.textInputEditTextEmail);
@@ -129,10 +148,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     @Override
     public void onClick(View v) {
+        if(!validateFields())
+            return;
         switch (v.getId()) {
 
             case R.id.appCompatButtonRegister:
-                submitForm();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                submitForm();
                 break;
 
             case R.id.appCompatTextViewLoginLink:
@@ -147,19 +168,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void submitForm() {
         int selected = radioGroupInputCreditCardType.getCheckedRadioButtonId();
         final String type;
-        if(selected == R.id.rdButtonInputCreditCardTypeVisa){
+        if (selected == R.id.rdButtonInputCreditCardTypeVisa) {
             type = "visa";
-        }
-        else{
+        } else {
             type = "mastercard";
         }
 
-        /*
-        registerUser(textInputEditTextName.getText().toString(), textInputEditTextEmail.getText().toString(), textInputEditTextPassword.getText().toString(), textInputEditTextAddress.getText().toString(), textInputEditTextFiscalNumber.getText().toString(), textInputEditTextCreditCardNumber.getText().toString(), textInputEditTextCreditCardValidity.getText().toString(),type);
-         */
 
 
-        //final RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
 
         KeyPairGenerator keyPairGenerator = null;
         try {
@@ -187,15 +203,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         try {
             json.put("name", name);
             json.put("email", email);
-            json.put("password",password);
-            json.put("address",address);
-            json.put("fiscalNumber",fiscalNumber);
-            json.put("publicKey",pub.toString());
-            json.put("cardType",type);
+            json.put("password", password);
+            json.put("address", address);
+            json.put("fiscalNumber", fiscalNumber);
+            json.put("publicKey", pub.toString());
+            json.put("cardType", type);
             json.put("cardNumber", cardNumber);
             json.put("cardExpiration", cardExpiration);
-
-
 
 
         } catch (JSONException e) {
@@ -207,13 +221,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("RESPONSE", "String Response : "+ response.toString());
+                        Log.d("RESPONSE", "String Response : " + response.toString());
                         Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
                         emptyInputEditText();
 
                         try {
 
-                            if(response.get("message").equals("User and card successfully added")){
+                            if (response.get("message").equals("Success")) {
                                 Toast.makeText(getApplicationContext(), "Welcome! You're signed in!", Toast.LENGTH_SHORT).show();
                                 user = new User(name, address, email, password, fiscalNumber, pub.toString(), priv.toString(), cardNumber, type, cardExpiration);
                                 user.setId(response.getInt("id"));
@@ -224,14 +238,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 intent.putExtras(b);
                                 startActivity(intent);
                                 finish();
+                            }else {
+                                // Snack Bar to show error message that record already exists
+                                Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         // Launch login activity
-
-
 
 
                     }
@@ -246,148 +260,74 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void saveUser(User user){
+    private void saveUser(User user) {
         SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);
 
         // Writing data to SharedPreferences
         SharedPreferences.Editor prefsEditor = settings.edit();
         Gson gson = new Gson();
         String json = gson.toJson(user);
-        Log.d("AAAA", json);
         prefsEditor.putString("currentUser", json);
         prefsEditor.putString(user.getId() + "", user.getPrivateKey());
         prefsEditor.apply();
 
     }
 
-/**
-    private void registerUser(final String name,  final String email, final String password,
-                              final String address, final String nif, final String number,
-                              final String validity, final String type) {
-        try {
-            //Log.i(TAG, "enrr");
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-            keyPairGenerator.initialize(368, random);
-
-            // generate a keypair
-            KeyPair pair = keyPairGenerator.generateKeyPair();
-            PrivateKey priv = pair.getPrivate();
-            PublicKey pub = pair.getPublic();
-
-            String[] str = new String[10];
-            user = new User(name, address, email, password, nif, pub.toString(), priv.toString(), type, number, validity);
-            str[0] = "register";
-            str[1] = email;
-            str[2] = name;
-            str[3] = password;
-            str[4] = nif;
-            str[5] = address;
-            str[6] = type;
-            str[7] = number;
-            str[8] = validity;
-            str[9] = pub.toString();
-            new registerAPI().execute(str);
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-    }
-/**
-    private class registerAPI extends AsyncTask<String, Void, String> {
-
-        private String name = "";
-
-        public registerAPI() {
-            super();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            switch (strings[0]) {
-                case "register":
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("email", strings[1]);
-                    map.put("name", strings[2]);
-                    name = strings[2];
-                    map.put("password", strings[3]);
-                    map.put("nif", strings[4]);
-                    map.put("address", strings[5]);
-                    map.put("type", strings[6]);
-                    map.put("number", strings[7]);
-                    map.put("validity", strings[8]);
-                    map.put("publicKey", strings[9]);
-
-                    JSONObject us = new JSONObject(map);
-                    return api.registerUser(us);
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            //Log.i(TAG, s);
-            if (s.equals("Error")) {
-                Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
-            } else {
-                user.saveObject(getFilesDir());
-
-                Toast.makeText(getApplicationContext(), "Hi " + name + ", You are successfully Added!", Toast.LENGTH_SHORT).show();
-
-                // Launch login activity
-                Intent intent = new Intent(
-                        RegisterActivity.this,
-                        ShoppingListActivity.class);
-                intent.putExtra("user", (Serializable) user);
-                startActivity(intent);
-                finish();
-            }
-        }
-    }
-
-
-
-
 
     /**
      * This method is to validate the input text fields and post data to SQLite
      */
- /**   private void postDataToSQLite() {
+    private boolean validateFields() {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
-            return;
+            return false;
         }
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
+            return false;
         }
         if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
+            return false;
         }
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
-            return;
+            return false;
         }
         if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
                 textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
-            return;
+            return false;
         }
 
-        if (!databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim())) {
-
-            user.setName(textInputEditTextName.getText().toString().trim());
-            user.setEmail(textInputEditTextEmail.getText().toString().trim());
-            user.setPassword(textInputEditTextPassword.getText().toString().trim());
-
-            databaseHelper.addUser(user);
-
-            // Snack Bar to show success message that record saved successfully
-            Snackbar.make(nestedScrollView, getString(R.string.success_message), Snackbar.LENGTH_LONG).show();
-            emptyInputEditText();
-
-
-        } else {
-            // Snack Bar to show error message that record already exists
-            Snackbar.make(nestedScrollView, getString(R.string.error_email_exists), Snackbar.LENGTH_LONG).show();
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextAddress, textInputLayoutAddress, getString(R.string.error_message_address))) {
+            return false;
         }
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextFiscalNumber, textInputLayoutFiscalNumber, getString(R.string.error_message_fiscal_number))) {
+            return false;
+        }
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardNumber, textInputLayoutCreditCardNumber, getString(R.string.error_message_credit_card_number))) {
+            return false;
+        }
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))) {
+            return false;
+        }
+
+        if(!inputValidation.hasInputEditTextGivenLength(9, textInputEditTextFiscalNumber, textInputLayoutFiscalNumber, getString(R.string.error_message_fiscal_number))){
+            return false;
+        }
+
+        if(!inputValidation.hasInputEditTextGivenLength(8, textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))){
+            return false;
+        }
+
+        if(!inputValidation.hasInputEditTextGivenLength(12, textInputEditTextCreditCardNumber, textInputLayoutCreditCardNumber, getString(R.string.error_message_credit_card_number))){
+            return false;
+        }
+
+        if(!inputValidation.isValidDate(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))){
+            return false;
+        }
+
+        return true;
 
 
     }

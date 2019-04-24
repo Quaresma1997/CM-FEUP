@@ -87,6 +87,7 @@ function myFunction(user, res) {
 }
 
 router.post("/register", (req, res, next) => {
+
     var errors = []
     if (!req.body.password) {
         errors.push("No password specified");
@@ -134,7 +135,7 @@ router.post("/register", (req, res, next) => {
                     return;
                 }
                 res.json({
-                    "message": "User and card successfully added",
+                    "message": "Success",
                     "data": data,
                     "id": row.idUser
                 })

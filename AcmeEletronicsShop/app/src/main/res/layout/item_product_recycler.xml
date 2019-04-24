@@ -19,7 +19,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:layout_gravity="center"
-                android:text="AAAAAAAA"
                 android:textSize="22sp"
                 android:textColor="@color/black" />
 
@@ -29,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center"
-                android:text="BBB"
                 android:textSize="22sp"
                 android:textColor="@android:color/black" />
 
@@ -48,7 +46,7 @@
                 android:layout_weight="1"
                 android:ems="3"
                 android:hint="@string/hint_quantity_product"
-                android:inputType="text"
+                android:inputType="number"
                 android:maxLength="3"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/gray"

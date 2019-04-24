@@ -75,6 +75,32 @@ public class InputValidation {
         return true;
     }
 
+    public boolean hasInputEditTextGivenLength(int length, TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message){
+        String value = textInputEditText.getText().toString().trim();
+        if (value.isEmpty() || value.length() != length) {
+            textInputLayout.setError(message);
+            hideKeyboardFrom(textInputEditText);
+            return false;
+        } else {
+            textInputLayout.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    public boolean isValidDate(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message){
+        String value = textInputEditText.getText().toString().trim();
+        if (value.isEmpty() || !value.matches("\\d{2}/\\d{2}")) {
+            textInputLayout.setError(message);
+            hideKeyboardFrom(textInputEditText);
+            return false;
+        } else {
+            textInputLayout.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
     /**
      * method to Hide keyboard
      *

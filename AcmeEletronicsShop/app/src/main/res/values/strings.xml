@@ -22,11 +22,14 @@
 
     <string name="error_message_name">Enter Full Name</string>
     <string name="error_message_email">Enter Valid Email</string>
-    <string name="error_message_password">Enter Password</string>
+    <string name="error_message_address">Enter Valid Address</string>
+    <string name="error_message_fiscal_number">Enter Valid Fiscal Number (9 digits)</string>
+    <string name="error_message_credit_card_number">Enter Valid Credit Card Number (12 digits)</string>
+    <string name="error_message_credit_card_validity">Enter Valid Credit Card Validity (mm/yy)</string>
+    <string name="error_message_password">Enter Valid password (8 characters minimum)</string>
     <string name="error_email_exists">Email Already Exists</string>
     <string name="error_password_match">Password Does Not Match</string>
     <string name="error_valid_email_password">Wrong Email or Password</string>
-    <string name="error_message_fiscal_number">Enter Valid Fiscal Number</string>
 
     <string name="success_message">Registration Successful</string>
     <string name="text_not_member">No account yet? <u>Create one</u></string>

@@ -111,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         Intent intent;
         switch (item.getItemId()) {
             case R.id.nav_item_profile:
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_item_shopping_list:
                 intent = new Intent(this, ShoppingListActivity.class);
