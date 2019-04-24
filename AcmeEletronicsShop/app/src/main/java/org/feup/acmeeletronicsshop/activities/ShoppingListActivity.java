@@ -464,11 +464,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     public void getProducts() {
 
-
-
-        //DEBUGGING
-        Log.d("NAME", "some" + user.getName() + "thing");
-
         String url = Utils.url + "/shoppinglist/" + user.getId();
 
         JsonObjectRequest productsRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -517,8 +512,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     }
 
     void removeItem(final int position){
-
-        Log.d("URLAGAIN", " " + listProducts.get(position).getBarcode());
 
         JsonObjectRequest removeProduct = new JsonObjectRequest(Request.Method.GET, Utils.url + "/shoppingList/remove/" + user.getId() + "/" + listProducts.get(position).getBarcode(), null,
                 new Response.Listener<JSONObject>() {
