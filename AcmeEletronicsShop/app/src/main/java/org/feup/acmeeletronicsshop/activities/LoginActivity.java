@@ -144,6 +144,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginAPI() {
+        if(!validateFields())
+            return;
+
         JSONObject json = new JSONObject();
         try {
             String email = "", password = "";
@@ -155,6 +158,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
         String url = Utils.url + "/login";
 
@@ -189,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 finish();
                             } else {
-                                Toast.makeText(getApplicationContext(), "Wrong email or password.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.error_valid_email_password, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -222,32 +227,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * This method is to validate the input text fields and verify login credentials from SQLite
      */
-   /* private void verifyFromSQLite() {
+    private boolean validateFields() {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
+            return false;
         }
+
         if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
-            return;
+            return false;
         }
+
         if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
-            return;
+            return false;
         }
 
-        if (databaseHelper.checkUser(textInputEditTextEmail.getText().toString().trim()
-                , textInputEditTextPassword.getText().toString().trim())) {
-
-
-            Intent accountsIntent = new Intent(activity, ShoppingListActivity.class);
-//            accountsIntent.putExtra("EMAIL", textInputEditTextEmail.getText().toString().trim());
-            emptyInputEditText();
-            startActivity(accountsIntent);
-            finish();
-
-        } else {
-            // Snack Bar to show success message that record is wrong
-            Snackbar.make(nestedScrollView, getString(R.string.error_valid_email_password), Snackbar.LENGTH_LONG).show();
-        }
-    }*/
+        return true;
+    }
 
     /**
      * This method is to empty all input edit text

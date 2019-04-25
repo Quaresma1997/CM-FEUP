@@ -118,6 +118,7 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
                 finish();
                 break;
             case  R.id.nav_item_history:
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case  R.id.nav_item_logout:
                 SharedPreferences settings = getSharedPreferences(Utils.PREFS_NAME, MODE_PRIVATE);

@@ -347,6 +347,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 finish();
                 break;
             case  R.id.nav_item_shopping_list:
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case  R.id.nav_item_history:
                 intent = new Intent(this, TransactionHistoryActivity.class);
