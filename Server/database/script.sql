@@ -58,7 +58,7 @@ CREATE TABLE Transactions(
 CREATE TABLE TransactionItem(
     idTransactionItem INTEGER PRIMARY KEY,
     quantity INTEGER NOT NULL,
-    idProduct INTEGER REFERENCES Product(idProduct),
+    barcode INTEGER REFERENCES Product(idProduct),
     idTransaction TEXT REFERENCES Transactions(idTransaction)
 );
 
@@ -71,6 +71,6 @@ INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612
 
 INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-21', 1, 10, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');
 INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-25', 1, 20, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d');
-INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (10, 1, 1);
-INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (7, 2, 1);
-INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (2, 2, 2);
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (10, 612345678907, 1);
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (7, 128534783579, 1);
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (2, 128534783579, 2);

@@ -9,20 +9,20 @@ const db = new sqlite3.Database('database/database.db');
 router.post('/', function(req, res){
     const idUser = req.body.idUser;
 
-    var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.idProduct = ShoppingListItem.idProduct')
+    var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
         var uuid = uuidv4();
         stmt.get([uuid, idUser], (err, t) => {
             async.each(shoppingList, (c, callback) => {
-				stmt = db.prepare('INSERT INTO TransactionItem (quantity, idProduct, idTransaction) VALUES (?, ?, ?)');
-				stmt.get([c.quantity, c.idProduct, uuid], (err, t1) => {
+				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');
+				stmt.get([c.quantity, c.barcode, uuid], (err, t1) => {
 					console.log("async: " + err);
 					callback();
 				});
 			}, (err) => {
 				if (err)
 					console.log(err);
-				else res.json(uuid);
+				else res.json({"uuid" : uuid });
             });
         });
     })

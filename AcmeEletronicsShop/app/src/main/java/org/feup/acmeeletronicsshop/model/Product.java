@@ -9,10 +9,13 @@ public class Product {
     private String description;
     private int price;
     private long barcode;
+    private int quantity;
 
     public Product(){};
 
-    public Product(int id, String name, String model, String maker, String color, String description, int price, long barcode) {
+
+
+    public Product(int id, String name, String model, String maker, String color, String description, int price, long barcode, int quantity) {
         this.id = id;
         this.name = name;
         this.model = model;
@@ -21,6 +24,7 @@ public class Product {
         this.description = description;
         this.price = price;
         this.barcode = barcode;
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -85,5 +89,13 @@ public class Product {
 
     public void setBarcode(long barcode) {
         this.barcode = barcode;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

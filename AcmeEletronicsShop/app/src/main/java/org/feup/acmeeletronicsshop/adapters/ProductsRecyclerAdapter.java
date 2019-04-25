@@ -49,8 +49,10 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         holder.textViewName.setText(listProducts.get(position).getName());
         String price = listProducts.get(position).getPrice() + "€";
         holder.textViewPrice.setText(price);
+        holder.editTextQuantity.setText("" + listProducts.get(position).getQuantity());
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -84,7 +86,6 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
                             mListener.onItemClick(position);
-                            Log.d("CLICKED1", "");
                         }
                     }
                 }

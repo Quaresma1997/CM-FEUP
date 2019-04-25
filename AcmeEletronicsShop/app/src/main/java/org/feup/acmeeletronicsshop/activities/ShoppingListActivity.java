@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,9 +32,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -130,11 +133,39 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 //TODO Receive the token (UUID)
                 //TODO Create a transaction\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
                 //TODO Generate a QR CODE with the token
-                String token = "AAA";
+                JSONObject transactionUser = new JSONObject();
+                try {
+                    transactionUser.put("idUser", user.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                QRCodeDialog(token);
+                String transactionUrl = Utils.url + "/transaction";
+
+                JsonObjectRequest transaction = new JsonObjectRequest(Request.Method.POST, transactionUrl, transactionUser,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                String uuid = null;
+                                try {
+                                    uuid = response.getString("uuid");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.d("UUID", uuid);
+                                QRCodeDialog(uuid);
+                                Toast.makeText(getApplicationContext(), "QRCode created with success!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
 
 
+                queue.add(transaction);
             }
         });
         builder.setNegativeButton("No", null);
@@ -396,9 +427,10 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                     String description = product.getString("description");
                                     int price = product.getInt("price");
                                     long barcode = product.getLong("barcode");
-                                    listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
+                                    int quantity = 1;
+                                    listProducts.add(new Product(id, model, model, maker, color, description, price, barcode, quantity));
                                     productsRecyclerAdapter.notifyDataSetChanged();
-                                    updateTotal();
+
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -420,11 +452,12 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 Log.d("PRODUCTS", "String Response : "+ response.toString());
                                 try {
                                     if(!response.getString("message").equals("Product already listed...")){
-                                        queue.add(productsRequest);
-                                    }
+                                         queue.add(productsRequest);
+                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -434,11 +467,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                 });
 
                 queue.add(addProduct);
-
-
-
-
-
 
             }
         }
@@ -477,8 +505,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                     public void onResponse(JSONObject response) {
 
                         try {
-
-
                             JSONArray products = response.getJSONArray("products");
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
@@ -490,11 +516,14 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 String description = product.getString("description");
                                 long barcode = product.getLong("barcode");
                                 int price = product.getInt("price");
-                                listProducts.add(new Product(id, model, model, maker, color, description, price, barcode));
+                                int quantity = product.getInt("quantity");
+                                listProducts.add(new Product(id, model, model, maker, color, description, price, barcode, quantity));
                                 productsRecyclerAdapter.notifyDataSetChanged();
+
                                 updateTotal();
 
                             }
+
                             //DEBUGGING
                             for (int j = 0; j < listProducts.size(); j++) {
                                 Log.d("IT" + j, listProducts.get(j).getModel());
