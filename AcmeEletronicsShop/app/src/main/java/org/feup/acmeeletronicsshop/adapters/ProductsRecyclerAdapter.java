@@ -72,7 +72,6 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         public AppCompatTextView textViewPrice;
         public EditText editTextQuantity;
         public ImageButton btnRemoveProduct;
-        public ImageButton btnAddQuantity;
 
         public ProductViewHolder(View view) {
             super(view);
@@ -130,17 +129,6 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
                 }
             });
 
-            btnAddQuantity.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(mListener != null){
-                        int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
-                            mListener.onAddQuantity(position);
-                        }
-                    }
-                }
-            });
 
 
         }

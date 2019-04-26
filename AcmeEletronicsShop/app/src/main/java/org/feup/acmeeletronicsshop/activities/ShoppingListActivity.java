@@ -290,6 +290,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             @Override
             public void onQuantityChanged(int position, int qtty) {
                 listProducts.get(position).setQuantity(qtty);
+                changeQuantity(position, qtty);
                 updateTotal();
             }
         });
@@ -583,4 +584,34 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
         total.setText(totalText);
     }
+
+
+    void changeQuantity(int position, int qtty){
+
+        long barcode = listProducts.get(position).getBarcode();
+        String url = Utils.url + "/shoppingList/quantity/" + user.getId() + "/" + barcode + "/" + qtty;
+
+        JsonObjectRequest changeQuantity = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if(response.getString("message").equals("Quantity changed!")){
+                                Log.d("QUANTITY", "Quantity changed!");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(changeQuantity);
+    }
+
+
 }
