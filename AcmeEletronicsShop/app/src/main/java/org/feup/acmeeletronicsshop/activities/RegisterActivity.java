@@ -148,8 +148,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     @Override
     public void onClick(View v) {
-        if(!validateFields())
-            return;
+        /*if(!validateFields())
+            return;*/
         switch (v.getId()) {
 
             case R.id.appCompatButtonRegister:
@@ -277,7 +277,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     /**
      * This method is to validate the input text fields and post data to SQLite
      */
-    private boolean validateFields() {
+   /* private boolean validateFields() {
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
             return false;
         }
@@ -330,7 +330,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return true;
 
 
-    }
+    }*/
 
     /**
      * This method is to empty all input edit text

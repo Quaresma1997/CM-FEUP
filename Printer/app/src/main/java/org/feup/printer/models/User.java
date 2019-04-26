@@ -7,8 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
 
     private int id;
     private String name;
@@ -28,17 +29,11 @@ public class User {
 
     }
 
-    public User(String name, String address, String email, String password, String fiscalNumber, String publicKey, String privateKey, String cardNumber, String cardType, String cardValidity) {
+    public User(String name, String address, String email, String fiscalNumber) {
         this.name = name;
         this.address = address;
         this.email = email;
-        this.password = password;
         this.fiscalNumber = fiscalNumber;
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
-        this.cardNumber = cardNumber;
-        this.cardType = cardType;
-        this.cardValidity = cardValidity;
     }
 
 

@@ -1,6 +1,8 @@
 package org.feup.printer.models;
 
-public class TransactionItem {
+import java.io.Serializable;
+
+public class TransactionItem implements Serializable {
     private int id;
     private int quantity;
     private String itemName;

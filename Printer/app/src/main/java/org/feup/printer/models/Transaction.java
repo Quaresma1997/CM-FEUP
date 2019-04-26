@@ -1,30 +1,21 @@
 package org.feup.printer.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Transaction {
-    private int id;
+public class Transaction implements Serializable {
     private Date date;
     private double totalCost;
     private String token;
     private List<TransactionItem> itemList;
 
 
-    public Transaction(int id, Date date, double totalCost, List<TransactionItem> itemList, String token) {
-        this.id = id;
+    public Transaction(Date date, double totalCost, List<TransactionItem> itemList, String token) {
         this.date = date;
         this.totalCost = totalCost;
         this.itemList = itemList;
         this.token = token;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Date getDate() {

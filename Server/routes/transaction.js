@@ -11,8 +11,9 @@ router.post('/', function(req, res){
 
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
-        var uuid = uuidv4();
-        stmt.get([uuid, idUser], (err, t) => {
+		var uuid = uuidv4();
+		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (date(\'now\'), ?, ?, ?)');
+        stmt.get([idUser, 100, uuid], (err, t) => {
             async.each(shoppingList, (c, callback) => {
 				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');
 				stmt.get([c.quantity, c.barcode, uuid], (err, t1) => {
@@ -27,11 +28,26 @@ router.post('/', function(req, res){
         });
     })
 })
+/*
 
+router.get("/:idUser", (req, res, next) => {
+    const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE idUser = ? AND Transactions.token = TransactionItem.idTransaction AND Product.barcode = TransactionItem.barcode');
+	console.log(req.params.idUser);
+	stmt.all(req.params.idUser, (err, rows) => {
+		if (rows != undefined && rows != null) {
+			res.json({"products" : rows}); // id is valid
+		} else {
+			console.log(rows);
+			res.json('No Cart'); // id doesn't exist
+    }
+    });
+})
+
+**/
 router.get('/:uuid', function (req, res) {
-	const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE Transactions.idTransaction = TransactionItem.idTransaction AND Product.idProduct = TransactionItem.idProduct AND Transactions.idTransaction = ?');
+	const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE Transactions.token = TransactionItem.idTransaction AND Product.barcode = TransactionItem.barcode AND Transactions.token = ?');
 	stmt.get(req.params.uuid, (err, info) => {
-		if (info.idOrder == req.params.uuid) {
+		if (info.token == req.params.uuid) {
 			res.send(info);
 		} else {
 			console.log(info);
@@ -42,6 +58,7 @@ router.get('/:uuid', function (req, res) {
 
 router.get('/printer/:uuid', function (req, res) {
 	var result = {
+		token: '',
 		day: '',
 		idUser: 0,
 		email: '',
@@ -51,24 +68,25 @@ router.get('/printer/:uuid', function (req, res) {
 		products: [
 		],
 	};
-	var stmt = db.prepare('SELECT * FROM transactions WHERE idOrder = ?');
-	stmt.get(req.params.uuid, (err, order) => {
-		result.day = order.day;
+	var stmt = db.prepare('SELECT * FROM Transactions WHERE token = ?');
+	stmt.get(req.params.uuid, (err, transaction) => {
+		result.day = transaction.day;
+		result.token = transaction.token;
 		stmt = db.prepare('SELECT * FROM User WHERE idUser = ?');
-		stmt.get(order.idUser, (err, user) => {
-			result.idUser = order.idUser;
+		stmt.get(transaction.idUser, (err, user) => {
+			result.idUser = transaction.idUser;
 			result.address = user.address;
 			result.email = user.email;
 			result.name = user.name;
-			result.nif = user.NIF;
-			stmt = db.prepare('SELECT * FROM OrderItem WHERE idOrder = ?');
+			result.fiscalNumber = user.fiscalNumber;
+			stmt = db.prepare('SELECT * FROM TransactionItem WHERE idTransaction = ?');
 			stmt.all(req.params.uuid, (err, info) => {
 				async.each(info, (i, callback) => {
-					var stmt1 = db.prepare('SELECT * FROM Product WHERE idProduct = ?');
-					stmt1.get(i.idProduct, (err, product) => {
+					var stmt1 = db.prepare('SELECT * FROM Product WHERE barcode = ?');
+					stmt1.get(i.barcode, (err, product) => {
 						console.log(product);
 						result.products.push({
-							idProduct: i.idProduct,
+							barcode: i.barcode,
 							maker: product.maker,
 							model: product.model,
 							price: product.price,
