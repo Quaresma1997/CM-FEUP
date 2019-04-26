@@ -12,7 +12,7 @@ router.post('/', function(req, res){
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
 		var uuid = uuidv4();
-		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (date(\'now\'), ?, ?, ?)');
+		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)');
         stmt.get([idUser, 100, uuid], (err, t) => {
             async.each(shoppingList, (c, callback) => {
 				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');
@@ -87,10 +87,8 @@ router.get('/printer/:uuid', function (req, res) {
 						console.log(product);
 						result.products.push({
 							barcode: i.barcode,
-							maker: product.maker,
-							model: product.model,
+							name: product.name,
 							price: product.price,
-							description: product.description,
 							quantity: i.quantity,
 						});
 						callback();
@@ -120,10 +118,8 @@ router.get('/previous/:idUser', function (req, res) {
 				result[j].products.push({
 					idProduct: transactions[i].idProduct,
 					quantity: transactions[i].quantity,
-					maker: transactions[i].maker,
-					model: transactions[i].model,
+					name: transactions[i].name,
 					price: transactions[i].price,
-					description: transactions[i].description,
 				});
 			} else {
 				j = j + 1;
@@ -136,10 +132,8 @@ router.get('/previous/:idUser', function (req, res) {
 				result[j].products.push({
 					idProduct: transactions[i].idProduct,
 					quantity: transactions[i].quantity,
-					maker: transactions[i].maker,
-					model: transactions[i].model,
+					name: transactions[i].name,
 					price: transactions[i].price,
-					description: transactions[i].description,
 				});
 			}
 		}

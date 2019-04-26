@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 String token = data.getStringExtra("SCAN_RESULT");
                 //TODO Get the transaction from the API with the token
                 //TODO creates the transaction and the user and sends it to the InvoiceActivity
-                String transactionUrl = "http://af4c0393.ngrok.io" + "/transaction/printer/" + token;
+                String transactionUrl = "http://a722be3a.ngrok.io" + "/transaction/printer/" + token;
 
                 final JsonObjectRequest transaction = new JsonObjectRequest(Request.Method.GET, transactionUrl, null,
                         new Response.Listener<JSONObject>() {

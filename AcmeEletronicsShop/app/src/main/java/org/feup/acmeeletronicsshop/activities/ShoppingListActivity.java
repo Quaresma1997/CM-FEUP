@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -81,6 +82,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
     final static int DIMENSION=300;
     final static String CH_SET="ISO-8859-1";
 
+    double totalPrice = 0;
+
     User user;
 
     RequestQueue queue;
@@ -125,14 +128,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         builder.setMessage("Are you Sure ?");
         builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
-                //TODO Send shopping list, signed with the private key stored when the registration was performed. Use
-                //TODO “SHA1WithRSA” as the signature algorithm
 
-                //TODO SERVER : ponto 4 do enunciado
-
-                //TODO Receive the token (UUID)
-                //TODO Create a transaction\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-                //TODO Generate a QR CODE with the token
                 JSONObject transactionUser = new JSONObject();
                 try {
                     transactionUser.put("idUser", user.getId());
@@ -290,6 +286,12 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             public void onAddQuantity(int position) {
 
             }
+
+            @Override
+            public void onQuantityChanged(int position, int qtty) {
+                listProducts.get(position).setQuantity(qtty);
+                updateTotal();
+            }
         });
 
         getProducts();
@@ -421,15 +423,11 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                     JSONArray products = response.getJSONArray("data");
                                     JSONObject product = products.getJSONObject(0);
                                     int id = product.getInt("idProduct");
-                                    String name = "name";
-                                    String model = product.getString("model");
-                                    String maker = product.getString("maker");
-                                    String color = product.getString("color");
-                                    String description = product.getString("description");
+                                    String name = product.getString("name");
                                     int price = product.getInt("price");
                                     long barcode = product.getLong("barcode");
                                     int quantity = 1;
-                                    listProducts.add(new Product(id, model, model, maker, color, description, price, barcode, quantity));
+                                    listProducts.add(new Product(id, name, price, barcode, quantity));
                                     productsRecyclerAdapter.notifyDataSetChanged();
 
 
@@ -510,15 +508,11 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
                                 int id = product.getInt("idProduct");
-                                String name = "name";
-                                String model = product.getString("model");
-                                String maker = product.getString("maker");
-                                String color = product.getString("color");
-                                String description = product.getString("description");
+                                String name = product.getString("name");
                                 long barcode = product.getLong("barcode");
                                 int price = product.getInt("price");
                                 int quantity = product.getInt("quantity");
-                                listProducts.add(new Product(id, model, model, maker, color, description, price, barcode, quantity));
+                                listProducts.add(new Product(id, name, price, barcode, quantity));
                                 productsRecyclerAdapter.notifyDataSetChanged();
 
                                 updateTotal();
@@ -527,7 +521,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                             //DEBUGGING
                             for (int j = 0; j < listProducts.size(); j++) {
-                                Log.d("IT" + j, listProducts.get(j).getModel());
+                                Log.d("IT" + j, listProducts.get(j).getName());
                             }
 
                         } catch (JSONException e) {
@@ -580,13 +574,13 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     void updateTotal(){
         TextView total = (TextView) findViewById(R.id.textViewTotal);
-        int totalPrice = 0;
-
-        for(int i = 0; i < listProducts.size(); i++){
-            totalPrice += listProducts.get(i).getPrice()*listProducts.get(i).getQuantity();
+        totalPrice = 0;
+        for(Product p : listProducts){
+            totalPrice += p.getPrice() * p.getQuantity();
         }
 
+        String totalText = totalPrice + "€";
 
-        total.setText(" " + totalPrice + "€");
+        total.setText(totalText);
     }
 }

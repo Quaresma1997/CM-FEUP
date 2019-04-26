@@ -3,6 +3,8 @@ package org.feup.acmeeletronicsshop.adapters;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
         void onItemClick(int position);
         void onDeleteClick(int position);
         void onAddQuantity(int position);
+        void onQuantityChanged(int position, int qtty);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -99,6 +102,31 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
                             mListener.onDeleteClick(position);
                         }
                     }
+                }
+            });
+
+            editTextQuantity.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if(mListener != null ){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            if(charSequence.length() == 0)
+                                mListener.onQuantityChanged(position, 0);
+                            else
+                                mListener.onQuantityChanged(position, Integer.parseInt(charSequence.toString()));
+                        }
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
                 }
             });
 

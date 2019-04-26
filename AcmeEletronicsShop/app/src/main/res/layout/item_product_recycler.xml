@@ -39,6 +39,8 @@
                 android:layout_weight="1"
                 android:ems="3"
                 android:hint="@string/hint_quantity_product"
+                android:text="@string/quantity_default"
+                android:textAlignment="center"
                 android:inputType="number"
                 android:maxLength="3"
                 android:textColor="@android:color/black"

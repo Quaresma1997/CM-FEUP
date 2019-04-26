@@ -75,5 +75,6 @@
     <string name="img_qr_code_description">QR Code</string>
     <string name="text_total_cost">Total cost</string>
     <string name="confirm">Confirm</string>
+    <string name="quantity_default">1</string>
 
 </resources>
