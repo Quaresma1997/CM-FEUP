@@ -59,7 +59,8 @@ CREATE TABLE TransactionItem(
     idTransaction TEXT REFERENCES Transactions(idTransaction)
 );
 
-INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', '1234', '123456789', 'Rua Teste', 'chave_publica');
+INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', 'Street 1234', '123456789', 'Rua Teste', 'chave_publica');
+INSERT INTO CreditCard (type, number, validity, idUser) VALUES('Visa', 123456789012, '11/20', 1);
 INSERT INTO Product (name, price, barcode) VALUES ('Smartphone', 120, 612345678907);
 INSERT INTO Product (name, price, barcode) VALUES ('Printer', 45, 128534783579);
 INSERT INTO Product (name, price, barcode) VALUES ('Coffee Machine', 24, 832487098238);
@@ -73,8 +74,8 @@ INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612345678907, 1);
 
 
-INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-21 11:20:44', 1, 10, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');
-INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-03-25 18:55:44', 1, 20, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d');
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (10, 612345678907, 1);
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (7, 128534783579, 1);
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (2, 128534783579, 2);
+INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-04-21 11:20:44', 1, 285, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');
+INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-04-25 18:55:44', 1, 125, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d');
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (2, 612345678907, 1);
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (1, 128534783579, 1);
+INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (1, 365252145238, 2);
