@@ -100,7 +100,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog(ShoppingListActivity.this);
+                if(listProducts.size() !=0)
+                    openDialog(ShoppingListActivity.this);
             }
         });
 
@@ -129,16 +130,17 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                JSONObject transactionUser = new JSONObject();
+                JSONObject transactionObject = new JSONObject();
                 try {
-                    transactionUser.put("idUser", user.getId());
+                    transactionObject.put("idUser", user.getId());
+                    transactionObject.put("total", totalPrice);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 String transactionUrl = Utils.url + "/transaction";
 
-                JsonObjectRequest transaction = new JsonObjectRequest(Request.Method.POST, transactionUrl, transactionUser,
+                JsonObjectRequest transaction = new JsonObjectRequest(Request.Method.POST, transactionUrl, transactionObject,
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {

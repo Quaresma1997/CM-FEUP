@@ -8,12 +8,13 @@ const db = new sqlite3.Database('database/database.db');
 
 router.post('/', function(req, res){
     const idUser = req.body.idUser;
-
+    const totalPrice = req.body.total;
+console.log(totalPrice);
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
 		var uuid = uuidv4();
 		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)');
-        stmt.get([idUser, 100, uuid], (err, t) => {
+        stmt.get([idUser, totalPrice, uuid], (err, t) => {
             async.each(shoppingList, (c, callback) => {
 				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');
 				stmt.get([c.quantity, c.barcode, uuid], (err, t1) => {
