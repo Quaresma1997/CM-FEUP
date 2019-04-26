@@ -90,7 +90,15 @@ public class InputValidation {
 
     public boolean isValidDate(TextInputEditText textInputEditText, TextInputLayout textInputLayout, String message){
         String value = textInputEditText.getText().toString().trim();
-        int month =  Integer.parseInt(value.substring(0, 2));
+        int month;
+        try{
+            month =  Integer.parseInt(value.substring(0, 2));
+        }catch (Exception e){
+            textInputLayout.setError(message);
+            hideKeyboardFrom(textInputEditText);
+            return false;
+        }
+
         if (value.isEmpty() || !value.matches("\\d{2}/\\d{2}") || month > 12) {
             textInputLayout.setError(message);
             hideKeyboardFrom(textInputEditText);

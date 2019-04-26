@@ -113,7 +113,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         textInputEditTextCreditCardNumber = (TextInputEditText) findViewById(R.id.textInputEditTextCreditCardNumber);
         textInputEditTextCreditCardValidity = (TextInputEditText) findViewById(R.id.textInputEditTextCreditCardValidity);
 
-
         radioGroupInputCreditCardType = (RadioGroup) findViewById((R.id.radioGroupInputCreditCardType));
 
         appCompatButtonRegister = (AppCompatButton) findViewById(R.id.appCompatButtonRegister);
@@ -148,8 +147,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     @Override
     public void onClick(View v) {
-        /*if(!validateFields())
-            return;*/
+
         switch (v.getId()) {
 
             case R.id.appCompatButtonRegister:
@@ -166,6 +164,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void submitForm() {
+        if(!validateFields())
+            return;
+
         int selected = radioGroupInputCreditCardType.getCheckedRadioButtonId();
         final String type;
         if (selected == R.id.rdButtonInputCreditCardTypeVisa) {
@@ -277,7 +278,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     /**
      * This method is to validate the input text fields and post data to SQLite
      */
-   /* private boolean validateFields() {
+    private boolean validateFields() {
+        /*
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
             return false;
         }
@@ -287,13 +289,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (!inputValidation.isInputEditTextEmail(textInputEditTextEmail, textInputLayoutEmail, getString(R.string.error_message_email))) {
             return false;
         }
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
-            return false;
-        }
-        if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
-                textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
-            return false;
-        }
+
 
         if (!inputValidation.isInputEditTextFilled(textInputEditTextAddress, textInputLayoutAddress, getString(R.string.error_message_address))) {
             return false;
@@ -303,15 +299,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
 
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardNumber, textInputLayoutCreditCardNumber, getString(R.string.error_message_credit_card_number))) {
-            return false;
-        }
-
-        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))) {
-            return false;
-        }
-
         if(!inputValidation.hasInputEditTextGivenLength(9, textInputEditTextFiscalNumber, textInputLayoutFiscalNumber, getString(R.string.error_message_fiscal_number))){
+            return false;
+        }
+
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextPassword, textInputLayoutPassword, getString(R.string.error_message_password))) {
             return false;
         }
 
@@ -319,9 +312,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
 
+
+        if (!inputValidation.isInputEditTextMatches(textInputEditTextPassword, textInputEditTextConfirmPassword,
+                textInputLayoutConfirmPassword, getString(R.string.error_password_match))) {
+            return false;
+        }
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardNumber, textInputLayoutCreditCardNumber, getString(R.string.error_message_credit_card_number))) {
+            return false;
+        }
+
         if(!inputValidation.hasInputEditTextGivenLength(12, textInputEditTextCreditCardNumber, textInputLayoutCreditCardNumber, getString(R.string.error_message_credit_card_number))){
             return false;
         }
+
+        if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))) {
+            return false;
+        }*/
 
         if(!inputValidation.isValidDate(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))){
             return false;
@@ -330,7 +337,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         return true;
 
 
-    }*/
+    }
 
     /**
      * This method is to empty all input edit text
