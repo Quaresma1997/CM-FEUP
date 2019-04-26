@@ -59,7 +59,7 @@ CREATE TABLE TransactionItem(
     idTransaction TEXT REFERENCES Transactions(idTransaction)
 );
 
-INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', 'Street 1234', '123456789', 'Rua Teste', 'chave_publica');
+INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', 'Street 1234', '25d55ad283aa400af464c76d713c07ad', '123456789', 'OpenSSLRSAPublicKey{modulus=b2793dc5472b4928df549105133e1110e2c987c75c9c5ec81b7007de370a6268bd48e4aadb1266b8abb8f9e5ff21,publicExponent=10001}');
 INSERT INTO CreditCard (type, number, validity, idUser) VALUES('Visa', 123456789012, '11/20', 1);
 INSERT INTO Product (name, price, barcode) VALUES ('Smartphone', 120, 612345678907);
 INSERT INTO Product (name, price, barcode) VALUES ('Printer', 45, 128534783579);
