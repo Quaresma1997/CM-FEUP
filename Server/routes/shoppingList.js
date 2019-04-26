@@ -167,7 +167,27 @@ router.get("/quantity/:idUser/:barcode/:quantity", (req, res) => {
 		}
 
 	})
+
 })
+
+router.get("/clear/:idUser", (req, res) => {
+	db.get('SELECT idShoppingList FROM ShoppingList WHERE ShoppingList.idUser = ?', [req.params.idUser], function (err, idShoppingList){
+		console.log(idShoppingList.idShoppingList);
+		db.run('DELETE FROM ShoppingListItem WHERE idShoppingList = ?', [idShoppingList.idShoppingList], function(err){
+			if (err) {
+				res.status(400).json({ "error": err.message })
+				return;
+			}
+			else {
+				res.json({
+					"message" : "ShoppingList cleared!",
+				})
+			}
+		})
+	})
+
+})
+
 
 module.exports = router;
 

@@ -105,6 +105,15 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
             }
         });
 
+        Button clear = findViewById(R.id.brnClear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearProducts();
+                getProducts();
+            }
+        });
+
 
         NavigationView navView = findViewById(R.id.nav_view);
         navView.bringToFront();
@@ -129,6 +138,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         builder.setMessage("Are you Sure ?");
         builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                clearProducts();
 
                 JSONObject transactionObject = new JSONObject();
                 try {
@@ -613,6 +624,41 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         });
 
         queue.add(changeQuantity);
+    }
+
+    public void clearProducts(){
+
+
+
+
+        String url = Utils.url + "/shoppingList/clear/" + user.getId();
+
+        JsonObjectRequest clearRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            if(response.getString("message").equals("ShoppingList cleared!")){
+                                for(int i = 0; i < listProducts.size(); i++){
+                                    listProducts.remove(i);
+                                }
+
+                                productsRecyclerAdapter.notifyDataSetChanged();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(clearRequest);
     }
 
 

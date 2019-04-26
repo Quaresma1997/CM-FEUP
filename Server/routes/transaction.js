@@ -9,7 +9,7 @@ const db = new sqlite3.Database('database/database.db');
 router.post('/', function(req, res){
     const idUser = req.body.idUser;
     const totalPrice = req.body.total;
-console.log(totalPrice);
+	console.log(totalPrice);
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
 		var uuid = uuidv4();
@@ -27,7 +27,7 @@ console.log(totalPrice);
 				else res.json({"uuid" : uuid });
             });
         });
-    })
+	})
 })
 /*
 
