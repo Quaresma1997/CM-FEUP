@@ -12,7 +12,7 @@ router.post('/', function(req, res){
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
 		var uuid = uuidv4();
-		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (date(\'now\'), ?, ?, ?)');
+		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)');
         stmt.get([idUser, 100, uuid], (err, t) => {
             async.each(shoppingList, (c, callback) => {
 				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');

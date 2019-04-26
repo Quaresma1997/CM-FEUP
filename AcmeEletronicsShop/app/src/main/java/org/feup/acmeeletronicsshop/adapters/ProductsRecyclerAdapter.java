@@ -114,10 +114,13 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if(mListener != null){
+                    if(mListener != null ){
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION) {
-                            mListener.onQuantityChanged(position, Integer.parseInt(charSequence.toString()));
+                            if(charSequence.length() == 0)
+                                mListener.onQuantityChanged(position, 0);
+                            else
+                                mListener.onQuantityChanged(position, Integer.parseInt(charSequence.toString()));
                         }
                     }
                 }

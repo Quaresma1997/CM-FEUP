@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -504,6 +505,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                         try {
                             JSONArray products = response.getJSONArray("products");
+                            Log.d("AAAAAAAAAAAA", products.toString());
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
                                 int id = product.getInt("idProduct");
