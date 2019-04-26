@@ -17,7 +17,7 @@ public class TransactionItemRecyclerAdapter extends RecyclerView.Adapter<Transac
 
     private List<TransactionItem> listItems;
 
-    public TransactionItemRecyclerAdapter(List<Transaction> listTransactions) {
+    public TransactionItemRecyclerAdapter(List<TransactionItem> listItems) {
         this.listItems = listItems;
     }
 
@@ -33,7 +33,7 @@ public class TransactionItemRecyclerAdapter extends RecyclerView.Adapter<Transac
     @Override
     public void onBindViewHolder(TransactionItemViewHolder holder, int position) {
         holder.txtViewName.setText(listItems.get(position).getItemName());
-        holder.txtViewQuantity.setText(listItems.get(position).getQuantity());
+        holder.txtViewQuantity.setText("" + listItems.get(position).getQuantity());
 
     }
 

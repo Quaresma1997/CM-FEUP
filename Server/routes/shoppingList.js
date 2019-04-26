@@ -129,8 +129,8 @@ router.get("/remove/:idUser/:barcode", (req, res) => {
 	})
 })
 
-router.get("/add_quantity/:idUser/:idProduct", (req, res) => {
-	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.idProduct = ?', [req.params.idUser, req.params.idProduct], function (err, list){
+router.get("/add_quantity/:idUser/:barcode", (req, res) => {
+	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, list){
 		if (err) {
 			res.status(400).json({ "error": err.message })
 			return;
@@ -144,26 +144,34 @@ router.get("/add_quantity/:idUser/:idProduct", (req, res) => {
 			})
 		}
 		else{
-			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND idProduct = ?', [list.quantity + 1, list.idShoppingList, req.params.idProduct], function(err, result){
+			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND barcode = ?', [list.quantity + 1, list.idShoppingList, req.params.barcode], function(err, result){
 				if (err) {
 					res.status(400).json({ "error": err.message })
 					return;
 				}
+			
 				
-				res.json({
-					"message": "Add another product of the same type!",
-					"data": result,
-					"id" : this.lastID
-				})
-				
+			})
+
+			db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, result){
+				if (err) {
+					res.status(400).json({ "error": err.message })
+					return;
+				}
+				else {
+					res.json({
+						"message": "Add another product of the same type!",
+						"data": result
+					})
+				}
 			})
 		}
 
 	})
 })
 
-router.get("/subtract_quantity/:idUser/:idProduct", (req, res) => {
-	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.idProduct = ?', [req.params.idUser, req.params.idProduct], function (err, list){
+router.get("/subtract_quantity/:idUser/:barcode", (req, res) => {
+	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, list){
 		if (err) {
 			res.status(400).json({ "error": err.message })
 			return;
@@ -177,14 +185,14 @@ router.get("/subtract_quantity/:idUser/:idProduct", (req, res) => {
 			})
 		}
 		else if(list.quantity == 1){
-			db.run('DELETE FROM ShoppingListItem WHERE idProduct = ? AND idShoppingList = ?', [req.params.idProduct, list.idShoppingList], function (err){
+			db.run('DELETE FROM ShoppingListItem WHERE barcode = ? AND idShoppingList = ?', [req.params.barcode, list.idShoppingList], function (err){
 				
 				if (err) {
 					res.status(400).json({ "error": err.message })
 					return;
 				}
 
-
+				
 				res.json({
 					"message": "Product deleted!",
 					"data": list,
@@ -193,19 +201,25 @@ router.get("/subtract_quantity/:idUser/:idProduct", (req, res) => {
 			})
 		}
 		else{
-			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND idProduct = ?', [list.quantity - 1, list.idShoppingList, req.params.idProduct], function(err, result){
+			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND barcode = ?', [list.quantity - 1, list.idShoppingList, req.params.barcode], function(err){
+				if (err) {
+					res.status(400).json({ "error": err.message })
+					return;
+				}			
+			})
+
+			db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, result){
 				if (err) {
 					res.status(400).json({ "error": err.message })
 					return;
 				}
-				
-				res.json({
-					"message": "Removed another product of the same type!",
-					"data": result,
-					"id" : this.lastID
-				})
-				
+				else {
+					res.json({
+						"data" : result
+					})
+				}
 			})
+
 		}
 
 	})
