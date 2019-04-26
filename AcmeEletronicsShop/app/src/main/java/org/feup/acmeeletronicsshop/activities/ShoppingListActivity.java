@@ -505,7 +505,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                         try {
                             JSONArray products = response.getJSONArray("products");
-                            Log.d("AAAAAAAAAAAA", products.toString());
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
                                 int id = product.getInt("idProduct");
@@ -575,7 +574,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     void updateTotal(){
         TextView total = (TextView) findViewById(R.id.textViewTotal);
-
+        totalPrice = 0;
         for(Product p : listProducts){
             totalPrice += p.getPrice() * p.getQuantity();
         }
