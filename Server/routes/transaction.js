@@ -23,16 +23,18 @@ router.post('/', function(req, res){
 		var vYear = vDate[1];
 
 		if(mYear > vYear){
-			res.send("Invalid card");
+			res.json({"message" : "Invalid card"});
 		}
 		else if(mYear = vYear && mMonth > vMonth){
-			res.send("Invalid card");
+			res.json({"message" : "Invalid card"});
+
 		}
 	})
 
 	console.log(totalPrice);
-    var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
+    var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode');
     stmt.all(idUser, (err, shoppingList) => {
+		console.log(shoppingList);
 		var uuid = uuidv4();
 		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)');
         stmt.get([idUser, totalPrice, uuid], (err, t) => {
@@ -45,11 +47,12 @@ router.post('/', function(req, res){
 			}, (err) => {
 				if (err)
 					console.log(err);
-				else res.json({"uuid" : uuid });
-            });
-        });
+				else res.json({"message" : "Valid card",
+								"uuid" : uuid });
+            	});
+        	});
+		})
 	})
-})
 /*
 
 router.get("/:idUser", (req, res, next) => {
@@ -130,13 +133,13 @@ router.get('/previous/:idUser', function (req, res) {
 	const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE idUser = ? AND Transactions.token = TransactionItem.idTransaction AND Product.barcode = TransactionItem.barcode');
 	stmt.all(req.params.idUser, (err, transactions) => {
 		console.log(transactions);
-		transactions.sort(function (a, b) {
+		/*transactions.sort(function (a, b) {
 			return a.idOrder > b.idOrder;
-		});
+		});*/
 		var temp = '';
 		var j = -1;
 		for (var i = 0; i < transactions.length; i++) {
-			if (temp == transactions[i].idOrder) {
+			if (temp == transactions[i].idTransaction) {
 				result[j].products.push({
 					idProduct: transactions[i].idProduct,
 					quantity: transactions[i].quantity,
@@ -145,7 +148,7 @@ router.get('/previous/:idUser', function (req, res) {
 				});
 			} else {
 				j = j + 1;
-				temp = transactions[i].idOrder;
+				temp = transactions[i].idTransaction;
 				result.push({
 					idOrder: transactions[i].token,
 					day: transactions[i].day,
