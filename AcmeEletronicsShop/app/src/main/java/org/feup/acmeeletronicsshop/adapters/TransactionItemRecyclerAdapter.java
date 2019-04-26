@@ -33,7 +33,7 @@ public class TransactionItemRecyclerAdapter extends RecyclerView.Adapter<Transac
     @Override
     public void onBindViewHolder(TransactionItemViewHolder holder, int position) {
         holder.txtViewName.setText(listItems.get(position).getItemName());
-        holder.txtViewQuantity.setText(listItems.get(position).getQuantity());
+        holder.txtViewQuantity.setText(listItems.get(position).getQuantity() + "");
 
     }
 

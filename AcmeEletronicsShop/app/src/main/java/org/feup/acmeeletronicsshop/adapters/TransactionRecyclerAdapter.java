@@ -42,7 +42,7 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
     @Override
     public void onBindViewHolder(TransactionViewHolder holder, int position) {
-        holder.txtViewID.setText(listTransactions.get(position).getId() + "");
+        holder.txtViewID.setText(listTransactions.get(position).getToken() + "");
         holder.txtViewDate.setText((listTransactions.get(position).getDate()).toString());
 
     }
