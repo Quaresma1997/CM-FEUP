@@ -224,7 +224,7 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
                                     int quantity = product.getInt("quantity");
                                     String name = product.getString("name");
 
-                                    totalCost += product.getInt("price");
+                                    totalCost += product.getInt("price") * quantity;
 
                                     TransactionItem item = new TransactionItem(idProduct, quantity, name);
                                     tItems.add(item);
