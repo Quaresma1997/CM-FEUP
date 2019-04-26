@@ -158,13 +158,20 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                             public void onResponse(JSONObject response) {
                                 String uuid = null;
                                 try {
-                                    uuid = response.getString("uuid");
+                                    if(response.getString("message").equals("Invalid card")){
+                                        Toast.makeText(getApplicationContext(), "Invalid card", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        uuid = response.getString("uuid");
+                                        Log.d("UUID", uuid);
+                                        QRCodeDialog(uuid);
+                                        Toast.makeText(getApplicationContext(), "QRCode created with success!", Toast.LENGTH_SHORT).show();
+                                    }
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                Log.d("UUID", uuid);
-                                QRCodeDialog(uuid);
-                                Toast.makeText(getApplicationContext(), "QRCode created with success!", Toast.LENGTH_SHORT).show();
+
 
                             }
                         }, new Response.ErrorListener() {
