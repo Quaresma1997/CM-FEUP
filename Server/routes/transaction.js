@@ -4,11 +4,32 @@ const async = require('async');
 const uuidv4 = require('uuid/v4');
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('database/database.db');
+const moment = require('moment');
 
 
 router.post('/', function(req, res){
+
+
+	var mYear = parseInt(moment().format('YY'));
+	var mMonth = parseInt(moment().format('MM'));
+
+
     const idUser = req.body.idUser;
-    const totalPrice = req.body.total;
+	const totalPrice = req.body.total;
+	db.get('SELECT validity FROM CreditCard WHERE idUser = ?', [idUser], function(err, c){
+		
+		vDate = c.validity.split("/");
+		var vMonth = parseInt(vDate[0]);
+		var vYear = vDate[1];
+
+		if(mYear > vYear){
+			res.send("Invalid card");
+		}
+		else if(mYear = vYear && mMonth > vMonth){
+			res.send("Invalid card");
+		}
+	})
+
 	console.log(totalPrice);
     var stmt = db.prepare('SELECT * FROM ShoppingList, ShoppingListItem, Product WHERE idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND Product.barcode = ShoppingListItem.barcode')
     stmt.all(idUser, (err, shoppingList) => {
