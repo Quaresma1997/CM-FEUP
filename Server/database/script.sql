@@ -26,13 +26,10 @@ CREATE Table CreditCard(
 
 CREATE TABLE Product(
     idProduct INTEGER PRIMARY KEY,
-    model TEXT NOT NULL,
-    maker TEXT NOT NULL,
-    color TEXT NOT NULL,
+    name TEXT NOT NULL,
     price FLOAT NOT NULL,
-    barcode INTEGER NOT NULL,
-    description TEXT
-);
+    barcode INTEGER NOT NULL
+); 
 
 CREATE TABLE ShoppingList(
     idShoppingList INTEGER PRIMARY KEY,
@@ -43,7 +40,7 @@ CREATE TABLE ShoppingListItem(
     idShoppingListItem INTEGER PRIMARY KEY,
     quantity INTEGER NOT NULL,
     barcode INTEGER REFERENCES Product(barcode),
-            idShoppingList INTEGER REFERENCES ShoppingList(idShoppingList)
+    idShoppingList INTEGER REFERENCES ShoppingList(idShoppingList)
 );
 
 CREATE TABLE Transactions(
@@ -63,8 +60,8 @@ CREATE TABLE TransactionItem(
 );
 
 INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUES('teste1234@gmail.com', 'Carlos Marques', '1234', '123456789', 'Rua Teste', 'chave_publica');
-INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model', 'maker', 'red', 10, 612345678907, 'description');
-INSERT INTO Product (model, maker, color, price, barcode, description) VALUES ('model2', 'maker2', 'yellow', 70, 128534783579, 'description2');
+INSERT INTO Product (name, price, barcode) VALUES ('Smartphone', 120, 612345678907);
+INSERT INTO Product (name, price, barcode) VALUES ('Printer', 45, 128534783579);
 INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612345678907, 1);
 

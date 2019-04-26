@@ -87,10 +87,8 @@ router.get('/printer/:uuid', function (req, res) {
 						console.log(product);
 						result.products.push({
 							barcode: i.barcode,
-							maker: product.maker,
-							model: product.model,
+							name: product.name,
 							price: product.price,
-							description: product.description,
 							quantity: i.quantity,
 						});
 						callback();
@@ -120,10 +118,8 @@ router.get('/previous/:idUser', function (req, res) {
 				result[j].products.push({
 					idProduct: transactions[i].idProduct,
 					quantity: transactions[i].quantity,
-					maker: transactions[i].maker,
-					model: transactions[i].model,
+					name: transactions[i].name,
 					price: transactions[i].price,
-					description: transactions[i].description,
 				});
 			} else {
 				j = j + 1;
@@ -136,10 +132,8 @@ router.get('/previous/:idUser', function (req, res) {
 				result[j].products.push({
 					idProduct: transactions[i].idProduct,
 					quantity: transactions[i].quantity,
-					maker: transactions[i].maker,
-					model: transactions[i].model,
+					name: transactions[i].name,
 					price: transactions[i].price,
-					description: transactions[i].description,
 				});
 			}
 		}
