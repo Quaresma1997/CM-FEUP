@@ -509,7 +509,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                             for(int i = 0; i < products.length(); i++){
                                 JSONObject product = products.getJSONObject(i);
                                 int id = product.getInt("idProduct");
-                                String name = "name";
+                                String name = product.getString("name");
                                 long barcode = product.getLong("barcode");
                                 int price = product.getInt("price");
                                 int quantity = product.getInt("quantity");
