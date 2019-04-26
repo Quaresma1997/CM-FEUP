@@ -279,7 +279,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * This method is to validate the input text fields and post data to SQLite
      */
     private boolean validateFields() {
-        /*
+
         if (!inputValidation.isInputEditTextFilled(textInputEditTextName, textInputLayoutName, getString(R.string.error_message_name))) {
             return false;
         }
@@ -328,7 +328,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (!inputValidation.isInputEditTextFilled(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))) {
             return false;
-        }*/
+        }
 
         if(!inputValidation.isValidDate(textInputEditTextCreditCardValidity, textInputLayoutCreditCardValidity, getString(R.string.error_message_credit_card_validity))){
             return false;

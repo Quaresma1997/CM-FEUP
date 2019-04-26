@@ -61,6 +61,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -628,9 +629,6 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
     public void clearProducts(){
 
-
-
-
         String url = Utils.url + "/shoppingList/clear/" + user.getId();
 
         JsonObjectRequest clearRequest = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -640,9 +638,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                         try {
                             if(response.getString("message").equals("ShoppingList cleared!")){
-                                for(int i = 0; i < listProducts.size(); i++){
-                                    listProducts.remove(i);
-                                }
+                                listProducts.removeAll(listProducts);
 
                                 productsRecyclerAdapter.notifyDataSetChanged();
                             }
@@ -659,6 +655,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         });
 
         queue.add(clearRequest);
+
+        updateTotal();
     }
 
 

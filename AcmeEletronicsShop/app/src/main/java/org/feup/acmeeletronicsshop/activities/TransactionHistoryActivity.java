@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionHistoryActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private Toolbar toolbar;
@@ -211,7 +212,7 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
                                 JSONObject transaction = jTransactions.getJSONObject(i);
 
                                 String day = transaction.getString("day");
-                                SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                                 Date date = formatter.parse(day);
 
                                 String token = transaction.getString("idOrder");
