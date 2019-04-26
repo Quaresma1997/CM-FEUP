@@ -583,7 +583,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         int totalPrice = 0;
 
         for(int i = 0; i < listProducts.size(); i++){
-            totalPrice += listProducts.get(i).getPrice();
+            totalPrice += listProducts.get(i).getPrice()*listProducts.get(i).getQuantity();
         }
 
 

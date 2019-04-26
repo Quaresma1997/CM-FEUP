@@ -77,7 +77,6 @@ public class ProductsRecyclerAdapter extends RecyclerView.Adapter<ProductsRecycl
             textViewPrice = (AppCompatTextView) view.findViewById(R.id.textViewPrice);
             editTextQuantity = (EditText) view.findViewById(R.id.editTextQuantity);
             btnRemoveProduct = (ImageButton) view.findViewById(R.id.btnRemoveProduct);
-            btnAddQuantity = (ImageButton) view.findViewById(R.id.btnAddQuantity);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

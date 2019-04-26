@@ -31,13 +31,6 @@
                 android:textSize="22sp"
                 android:textColor="@android:color/black" />
 
-            <ImageButton
-                android:id="@+id/btnAddQuantity"
-                android:layout_width="5dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                card_view:srcCompat="@drawable/add_quantity" />
-
             <EditText
                 android:id="@+id/editTextQuantity"
                 android:layout_width="5dp"

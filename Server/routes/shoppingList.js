@@ -129,7 +129,7 @@ router.get("/remove/:idUser/:barcode", (req, res) => {
 	})
 })
 
-router.get("/add_quantity/:idUser/:barcode", (req, res) => {
+router.get("/quantity/:idUser/:barcode/:quantity", (req, res) => {
 	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, list){
 		if (err) {
 			res.status(400).json({ "error": err.message })
@@ -144,64 +144,7 @@ router.get("/add_quantity/:idUser/:barcode", (req, res) => {
 			})
 		}
 		else{
-			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND barcode = ?', [list.quantity + 1, list.idShoppingList, req.params.barcode], function(err, result){
-				if (err) {
-					res.status(400).json({ "error": err.message })
-					return;
-				}
-			
-				
-			})
-
-			db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, result){
-				if (err) {
-					res.status(400).json({ "error": err.message })
-					return;
-				}
-				else {
-					res.json({
-						"message": "Add another product of the same type!",
-						"data": result
-					})
-				}
-			})
-		}
-
-	})
-})
-
-router.get("/subtract_quantity/:idUser/:barcode", (req, res) => {
-	db.get('SELECT * FROM ShoppingList, ShoppingListItem WHERE ShoppingList.idUser = ? AND ShoppingList.idShoppingList = ShoppingListItem.idShoppingList AND ShoppingListItem.barcode = ?', [req.params.idUser, req.params.barcode], function (err, list){
-		if (err) {
-			res.status(400).json({ "error": err.message })
-			return;
-		}	
-
-		if(list == undefined){
-			res.json({
-				"message": "Product not found...",
-				"data": list,
-				"id" : this.lastID
-			})
-		}
-		else if(list.quantity == 1){
-			db.run('DELETE FROM ShoppingListItem WHERE barcode = ? AND idShoppingList = ?', [req.params.barcode, list.idShoppingList], function (err){
-				
-				if (err) {
-					res.status(400).json({ "error": err.message })
-					return;
-				}
-
-				
-				res.json({
-					"message": "Product deleted!",
-					"data": list,
-					"id" : this.lastID
-				})
-			})
-		}
-		else{
-			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND barcode = ?', [list.quantity - 1, list.idShoppingList, req.params.barcode], function(err){
+			db.run('UPDATE ShoppingListItem SET quantity = ? WHERE idShoppingList = ? AND barcode = ?', [req.params.quantity, list.idShoppingList, req.params.barcode], function(err){
 				if (err) {
 					res.status(400).json({ "error": err.message })
 					return;
@@ -215,6 +158,7 @@ router.get("/subtract_quantity/:idUser/:barcode", (req, res) => {
 				}
 				else {
 					res.json({
+						"message" : "Quantity changed!",
 						"data" : result
 					})
 				}
