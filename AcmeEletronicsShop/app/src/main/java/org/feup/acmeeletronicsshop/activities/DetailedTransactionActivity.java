@@ -58,7 +58,7 @@ public class DetailedTransactionActivity extends AppCompatActivity {
         AppCompatTextView totalCost = (AppCompatTextView) findViewById(R.id.txtTotalCost);
         idTransaction.setText(transaction.getToken());
         date.setText((transaction.getDate()).toString());
-        totalCost.setText(transaction.getTotalCost()+"");
+        totalCost.setText(transaction.getTotalCost()+"€");
 
         String token = transaction.getToken();
         initQRCode(token);
