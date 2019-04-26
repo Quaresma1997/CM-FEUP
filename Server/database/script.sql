@@ -63,6 +63,12 @@ INSERT INTO User (email, name, address, password, fiscalNumber, publicKey) VALUE
 INSERT INTO Product (name, price, barcode) VALUES ('Smartphone', 120, 612345678907);
 INSERT INTO Product (name, price, barcode) VALUES ('Printer', 45, 128534783579);
 INSERT INTO Product (name, price, barcode) VALUES ('Coffee Machine', 24, 832487098238);
+INSERT INTO Product (name, price, barcode) VALUES ('Flashdrive 1TB', 449, 347778542586);
+INSERT INTO Product (name, price, barcode) VALUES ('Flashdrive 128GB', 52, 121245625879);
+INSERT INTO Product (name, price, barcode) VALUES ('Hardrive 2TB', 125, 365252145238);
+INSERT INTO Product (name, price, barcode) VALUES ('Hardrive 1TB', 62, 222333444591);
+INSERT INTO Product (name, price, barcode) VALUES ('JoyStick', 50, 987456123029);
+INSERT INTO Product (name, price, barcode) VALUES ('Keyboard', 22, 808052525362);
 INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612345678907, 1);
 
