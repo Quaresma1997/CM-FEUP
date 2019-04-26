@@ -72,10 +72,3 @@ INSERT INTO Product (name, price, barcode) VALUES ('JoyStick', 50, 987456123029)
 INSERT INTO Product (name, price, barcode) VALUES ('Keyboard', 22, 808052525362);
 INSERT INTO ShoppingList (idUser) VALUES (1);
 INSERT INTO ShoppingListItem (quantity, barcode, idShoppingList) VALUES (10, 612345678907, 1);
-
-
-INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-04-21 11:20:44', 1, 285, 'e73e0ec0-d7d0-47f7-9377-3bd53e11815a');
-INSERT INTO Transactions (day, idUser, total, token) VALUES ('2019-04-25 18:55:44', 1, 125, 'e9a14039-3ec2-41b4-ab43-1377e8c7933d');
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (2, 612345678907, 1);
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (1, 128534783579, 1);
-INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (1, 365252145238, 2);

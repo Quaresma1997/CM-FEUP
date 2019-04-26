@@ -17,7 +17,7 @@ router.post('/', function(req, res){
     const idUser = req.body.idUser;
 	const totalPrice = req.body.total;
 	db.get('SELECT validity FROM CreditCard WHERE idUser = ?', [idUser], function(err, c){
-		
+
 		vDate = c.validity.split("/");
 		var vMonth = parseInt(vDate[0]);
 		var vYear = vDate[1];
@@ -36,7 +36,7 @@ router.post('/', function(req, res){
     stmt.all(idUser, (err, shoppingList) => {
 		console.log(shoppingList);
 		var uuid = uuidv4();
-		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (CURRENT_TIMESTAMP, ?, ?, ?)');
+		stmt = db.prepare('INSERT INTO Transactions (day, idUser, total, token) VALUES (datetime(\'now\'), ?, ?, ?)');
         stmt.get([idUser, totalPrice, uuid], (err, t) => {
             async.each(shoppingList, (c, callback) => {
 				stmt = db.prepare('INSERT INTO TransactionItem (quantity, barcode, idTransaction) VALUES (?, ?, ?)');

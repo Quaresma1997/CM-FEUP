@@ -212,7 +212,7 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
                                 JSONObject transaction = jTransactions.getJSONObject(i);
 
                                 String day = transaction.getString("day");
-                                SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                                SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
                                 Date date = formatter.parse(day);
 
                                 String token = transaction.getString("idOrder");
@@ -259,6 +259,5 @@ public class TransactionHistoryActivity extends AppCompatActivity implements Nav
         b.putSerializable("transaction", t);
         intent.putExtras(b);
         startActivity(intent);
-        finish();
     }
 }

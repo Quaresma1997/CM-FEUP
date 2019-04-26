@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     static final String ACTION_SCAN = "com.google.zxing.client.android.SCAN";
@@ -88,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 String token = data.getStringExtra("SCAN_RESULT");
-                //TODO Get the transaction from the API with the token
-                //TODO creates the transaction and the user and sends it to the InvoiceActivity
                 String transactionUrl = "http://a722be3a.ngrok.io" + "/transaction/printer/" + token;
 
                 final JsonObjectRequest transaction = new JsonObjectRequest(Request.Method.GET, transactionUrl, null,
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     String day = response.getString("day");
 
-                                    SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");
+                                    SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
 
                                     Date date = formatter.parse(day);
                                     int totalCost = 0;
@@ -123,14 +122,12 @@ public class MainActivity extends AppCompatActivity {
                                         JSONObject product = products.getJSONObject(i);
 
                                         int id = product.getInt("barcode");
-                                        String maker = product.getString("maker");
-                                        String model = product.getString("model");
+                                        String prodName = product.getString("name");
                                         int price = product.getInt("price");
                                         totalCost += price;
-                                        String description = product.getString("description");
                                         int quantity = product.getInt("quantity");
 
-                                        TransactionItem item = new TransactionItem(id, quantity, model);
+                                        TransactionItem item = new TransactionItem(id, quantity, prodName);
                                         items.add(item);
 
                                     }

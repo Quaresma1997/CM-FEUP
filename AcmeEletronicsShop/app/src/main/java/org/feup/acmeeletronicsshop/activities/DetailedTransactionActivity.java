@@ -1,5 +1,6 @@
 package org.feup.acmeeletronicsshop.activities;
 
+import android.app.Dialog;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,8 +12,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -39,6 +43,8 @@ public class DetailedTransactionActivity extends AppCompatActivity {
 
     Transaction transaction;
 
+    private Dialog qrCodeDialog;
+
     TransactionItemRecyclerAdapter transactionItemRecyclerAdapter;
     RecyclerView recyclerViewTransactionItem;
     List<TransactionItem> items;
@@ -51,6 +57,10 @@ public class DetailedTransactionActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         AppCompatTextView idTransaction = (AppCompatTextView) findViewById(R.id.txtViewID);
@@ -59,9 +69,6 @@ public class DetailedTransactionActivity extends AppCompatActivity {
         idTransaction.setText(transaction.getToken());
         date.setText((transaction.getDate()).toString());
         totalCost.setText(transaction.getTotalCost()+"€");
-
-        String token = transaction.getToken();
-        initQRCode(token);
 
         recyclerViewTransactionItem = (RecyclerView) findViewById(R.id.recyclerViewTransactionItems);
 
@@ -77,32 +84,65 @@ public class DetailedTransactionActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_qr, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.btnQR:
+                QRCodeDialog(transaction.getToken());
+                break;
+
         }
+
         return super.onOptionsItemSelected(item);
     }
 
-    private void initQRCode(final String token){
+    public void QRCodeDialog(final String token){
+        qrCodeDialog = new Dialog(DetailedTransactionActivity.this);
+        qrCodeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        qrCodeDialog.setContentView(R.layout.qrcodedialog);
+        qrCodeDialog.setTitle("QR Code");
+
         Thread t = new Thread(new Runnable() {    // convert in a separate thread to avoid possible ANR
             public void run() {
                 final Bitmap bitmap;
-                final ImageView qrCodeIv = (ImageView) findViewById(R.id.img_qr_code);
+                final ImageView qrCodeIv = (ImageView) qrCodeDialog.findViewById(R.id.imgView);
+                final Button confirm = (Button)qrCodeDialog.findViewById(R.id.btnConfirm);
 
                 bitmap = encodeAsBitmap(token);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         qrCodeIv.setImageBitmap(bitmap);
+                        confirm.setEnabled(true);
                     }
                 });
+
+
+
+                confirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        qrCodeDialog.cancel();
+                    }
+                });
+
 
             }
         });
         t.start();
+
+
+
+        qrCodeDialog.show();
     }
 
     Bitmap encodeAsBitmap(String str) {

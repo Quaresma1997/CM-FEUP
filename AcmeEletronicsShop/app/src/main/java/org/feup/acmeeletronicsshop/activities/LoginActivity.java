@@ -138,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // Navigate to RegisterActivity
                 Intent intentRegister = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intentRegister);
-                finish();
                 break;
         }
     }
@@ -175,7 +174,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Toast.makeText(getApplicationContext(), "Welcome back!", Toast.LENGTH_SHORT).show();
                                 JSONObject data = response.getJSONObject("data");
                                 JSONObject creditCard = response.getJSONObject("creditCard");
-                                Log.d("AAA", creditCard.toString());
                                 User user = new User(data.getString("name"), data.getString("address"), data.getString("email"),
                                         data.getString("password"), data.getString("fiscalNumber"), data.getString("publicKey"),
                                         creditCard.getString("number"), creditCard.getString("type"),

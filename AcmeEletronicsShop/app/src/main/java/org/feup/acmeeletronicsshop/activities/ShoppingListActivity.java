@@ -97,8 +97,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
-        Button b = findViewById(R.id.btnPay);
-        b.setOnClickListener(new View.OnClickListener() {
+        Button pay = findViewById(R.id.btnPay);
+        pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(listProducts.size() !=0)
@@ -110,8 +110,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearProducts();
-                getProducts();
+                if(listProducts.size() != 0)
+                    clearProducts();
             }
         });
 
@@ -159,13 +159,14 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 String uuid = null;
                                 try {
                                     if(response.getString("message").equals("Invalid card")){
-                                        Toast.makeText(getApplicationContext(), "Invalid card", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "Date must be after today!", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
                                         uuid = response.getString("uuid");
                                         Log.d("UUID", uuid);
                                         QRCodeDialog(uuid);
                                         Toast.makeText(getApplicationContext(), "QRCode created with success!", Toast.LENGTH_SHORT).show();
+                                        clearProducts();
                                     }
 
 
@@ -185,7 +186,7 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                 queue.add(transaction);
 
-                clearProducts();
+
             }
         });
         builder.setNegativeButton("No", null);
@@ -540,14 +541,9 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
                                 listProducts.add(new Product(id, name, price, barcode, quantity));
                                 productsRecyclerAdapter.notifyDataSetChanged();
 
-                                updateTotal();
-
                             }
 
-                            //DEBUGGING
-                            for (int j = 0; j < listProducts.size(); j++) {
-                                Log.d("IT" + j, listProducts.get(j).getName());
-                            }
+                            updateTotal();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -648,7 +644,9 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
                         try {
                             if(response.getString("message").equals("ShoppingList cleared!")){
-                                listProducts.removeAll(listProducts);
+                                listProducts.clear();
+
+                                updateTotal();
 
                                 productsRecyclerAdapter.notifyDataSetChanged();
                             }
