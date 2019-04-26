@@ -184,6 +184,8 @@ public class ShoppingListActivity extends AppCompatActivity implements Navigatio
 
 
                 queue.add(transaction);
+
+                clearProducts();
             }
         });
         builder.setNegativeButton("No", null);
