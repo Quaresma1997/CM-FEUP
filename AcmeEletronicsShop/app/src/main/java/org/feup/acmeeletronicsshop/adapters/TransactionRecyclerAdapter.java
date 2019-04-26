@@ -17,9 +17,18 @@ import java.util.List;
 public class TransactionRecyclerAdapter extends RecyclerView.Adapter<TransactionRecyclerAdapter.TransactionViewHolder> {
 
     private List<Transaction> listTransactions;
+    private TransactionRecyclerAdapter.OnItemClickListener mListener;
 
     public TransactionRecyclerAdapter(List<Transaction> listTransactions) {
         this.listTransactions = listTransactions;
+    }
+
+    public void setOnItemClickListener(TransactionRecyclerAdapter.OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     @Override
@@ -33,8 +42,8 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
     @Override
     public void onBindViewHolder(TransactionViewHolder holder, int position) {
-        holder.txtViewID.setText(listTransactions.get(position).getId());
-        holder.txtViewDate.setText(listTransactions.get(position).getDate().toString());
+        holder.txtViewID.setText(listTransactions.get(position).getId() + "");
+        holder.txtViewDate.setText((listTransactions.get(position).getDate()).toString());
 
     }
 
@@ -56,8 +65,23 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
         private TransactionViewHolder(View view) {
             super(view);
             txtViewID = (AppCompatTextView) view.findViewById(R.id.txtViewID);
-            txtViewDate = (AppCompatTextView) view.findViewById(R.id.textViewPrice);
+            txtViewDate = (AppCompatTextView) view.findViewById(R.id.txtViewDate);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
+
+
+
     }
 
 

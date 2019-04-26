@@ -1,9 +1,10 @@
 package org.feup.acmeeletronicsshop.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Transaction {
+public class Transaction implements Serializable {
     private int id;
     private Date date;
     private double totalCost;
@@ -11,8 +12,7 @@ public class Transaction {
     private List<TransactionItem> itemList;
 
 
-    public Transaction(int id, Date date, double totalCost, List<TransactionItem> itemList, String token) {
-        this.id = id;
+    public Transaction(String token, Date date, double totalCost, List<TransactionItem> itemList) {
         this.date = date;
         this.totalCost = totalCost;
         this.itemList = itemList;

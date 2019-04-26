@@ -106,7 +106,7 @@ router.get('/printer/:uuid', function (req, res) {
 // retrieve all transactions of a given customer
 router.get('/previous/:idUser', function (req, res) {
 	var result = [];
-	const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE idUser = ? AND Transactions.idTransaction = TransactionItem.idTransaction AND Product.barcode = TransactionItem.barcode');
+	const stmt = db.prepare('SELECT * FROM Transactions, TransactionItem, Product WHERE idUser = ? AND Transactions.token = TransactionItem.idTransaction AND Product.barcode = TransactionItem.barcode');
 	stmt.all(req.params.idUser, (err, transactions) => {
 		console.log(transactions);
 		transactions.sort(function (a, b) {
@@ -126,7 +126,7 @@ router.get('/previous/:idUser', function (req, res) {
 				j = j + 1;
 				temp = transactions[i].idOrder;
 				result.push({
-					idOrder: transactions[i].idOrder,
+					idOrder: transactions[i].token,
 					day: transactions[i].day,
 					products: [],
 				});
@@ -139,7 +139,7 @@ router.get('/previous/:idUser', function (req, res) {
 			}
 		}
 		if (transactions.length > 0) {
-			res.send(result);
+			res.send({"result" : result});
 		} else {
 			console.log(transactions);
 			res.send('No transactions');

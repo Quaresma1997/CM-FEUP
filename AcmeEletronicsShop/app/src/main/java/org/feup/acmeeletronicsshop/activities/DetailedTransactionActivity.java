@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,24 +22,58 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 
 import org.feup.acmeeletronicsshop.R;
+import org.feup.acmeeletronicsshop.adapters.TransactionItemRecyclerAdapter;
+import org.feup.acmeeletronicsshop.adapters.TransactionRecyclerAdapter;
+import org.feup.acmeeletronicsshop.model.Transaction;
+import org.feup.acmeeletronicsshop.model.TransactionItem;
+import org.feup.acmeeletronicsshop.model.User;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class DetailedTransactionActivity extends AppCompatActivity {
     private Toolbar toolbar;
     final static int DIMENSION=300;
     final static String CH_SET="ISO-8859-1";
 
+    Transaction transaction;
+
+    TransactionItemRecyclerAdapter transactionItemRecyclerAdapter;
+    RecyclerView recyclerViewTransactionItem;
+    List<TransactionItem> items;
+
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_detailed_transaction);
+
+        transaction = (Transaction) getIntent().getSerializableExtra("transaction");
 
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        String token = "TEST";
+        AppCompatTextView idTransaction = (AppCompatTextView) findViewById(R.id.txtViewID);
+        AppCompatTextView date = (AppCompatTextView) findViewById(R.id.txtViewDate);
+        AppCompatTextView totalCost = (AppCompatTextView) findViewById(R.id.txtTotalCost);
+        idTransaction.setText(transaction.getToken());
+        date.setText((transaction.getDate()).toString());
+        totalCost.setText(transaction.getTotalCost()+"");
+
+        String token = transaction.getToken();
         initQRCode(token);
+
+        recyclerViewTransactionItem = (RecyclerView) findViewById(R.id.recyclerViewTransactionItems);
+
+        items = transaction.getItemlist();
+
+        transactionItemRecyclerAdapter = new TransactionItemRecyclerAdapter(items);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerViewTransactionItem.setLayoutManager(mLayoutManager);
+        recyclerViewTransactionItem.setItemAnimator(new DefaultItemAnimator());
+        recyclerViewTransactionItem.setHasFixedSize(true);
+        recyclerViewTransactionItem.setAdapter(transactionItemRecyclerAdapter);
     }
 
     @Override
