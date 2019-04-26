@@ -21,7 +21,8 @@
         </activity>
         <activity
             android:name=".activities.RegisterActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.LoginActivity">
         </activity>
         <activity
             android:name=".activities.ShoppingListActivity"
