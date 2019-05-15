@@ -1,0 +1,17 @@
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\bin\Debug\netstandard2.0\WeatherApp.deps.json
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\bin\Debug\netstandard2.0\WeatherApp.dll
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\bin\Debug\netstandard2.0\WeatherApp.pdb
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.csprojAssemblyReference.cache
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\AboutPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\ItemDetailPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\ItemsPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\MainPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\MenuPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\Views\NewItemPage.xaml.g.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.csproj.CoreCompileInputs.cache
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.AssemblyInfoInputs.cache
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.AssemblyInfo.cs
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\XamlC.stamp
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.dll
+C:\Users\LuísCorreia\source\repos\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.pdb
