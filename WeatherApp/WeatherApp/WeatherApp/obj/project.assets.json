@@ -271,6 +271,7 @@
         "lib/monoandroid80/Xamarin.Essentials.pdb",
         "lib/monoandroid80/Xamarin.Essentials.xml",
         "lib/monoandroid81/Xamarin.Essentials.dll",
+        "lib/monoandroid81/Xamarin.Essentials.dll.mdb",
         "lib/monoandroid81/Xamarin.Essentials.pdb",
         "lib/monoandroid81/Xamarin.Essentials.xml",
         "lib/netstandard1.0/Xamarin.Essentials.dll",
@@ -472,11 +473,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+      "projectUniqueName": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
       "projectName": "WeatherApp",
-      "projectPath": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+      "projectPath": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
       "packagesPath": "C:\\Users\\LuísCorreia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp\\obj\\",
+      "outputPath": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\ProgramData\\Xamarin\\NuGet\\",

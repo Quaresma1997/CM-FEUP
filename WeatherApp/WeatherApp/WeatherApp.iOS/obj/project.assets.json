@@ -704,6 +704,7 @@
         "lib/monoandroid80/Xamarin.Essentials.pdb",
         "lib/monoandroid80/Xamarin.Essentials.xml",
         "lib/monoandroid81/Xamarin.Essentials.dll",
+        "lib/monoandroid81/Xamarin.Essentials.dll.mdb",
         "lib/monoandroid81/Xamarin.Essentials.pdb",
         "lib/monoandroid81/Xamarin.Essentials.xml",
         "lib/netstandard1.0/Xamarin.Essentials.dll",
@@ -909,11 +910,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
+      "projectUniqueName": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
       "projectName": "WeatherApp.iOS",
-      "projectPath": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
+      "projectPath": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
       "packagesPath": "C:\\Users\\LuísCorreia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\obj\\",
+      "outputPath": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -934,8 +935,8 @@
       "frameworks": {
         "xamarinios10": {
           "projectReferences": {
-            "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
-              "projectPath": "C:\\Users\\LuísCorreia\\source\\repos\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
+            "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
+              "projectPath": "C:\\Users\\LuísCorreia\\Documents\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
             }
           }
         }
