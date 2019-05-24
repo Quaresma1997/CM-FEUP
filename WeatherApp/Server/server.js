@@ -14,8 +14,8 @@ app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
 });
 
-app.get("/weather", (req, res) => {
-    request('https://api.apixu.com/v1/forecast.json?key=fbf305ea8c454be0b53142701192904&q=Beja', function (error, response, body) {
+app.get("/:city", (req, res) => {
+    request('https://api.apixu.com/v1/forecast.json?key=fbf305ea8c454be0b53142701192904&q=' + req.params.city + '&days=5', function (error, response, body) {
         console.log('error:', error); // Print the error if one occurred and handle it
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         parsed = JSON.parse(body);
@@ -36,11 +36,31 @@ app.get("/weather", (req, res) => {
         const feelslike_c = parsed.current.feelslike_c;
         const feelslike_f = parsed.current.feelslike_f;
         const uv = parsed.current.uv;
+
         const maxtemp_c = parsed.forecast.forecastday[0].day.maxtemp_c;
         const maxtemp_f = parsed.forecast.forecastday[0].day.maxtemp_f;
         const mintemp_c = parsed.forecast.forecastday[0].day.mintemp_c;
         const mintemp_f = parsed.forecast.forecastday[0].day.mintemp_f;
 
+        const maxtemp_c_1 = parsed.forecast.forecastday[1].day.maxtemp_c;
+        const mintemp_c_1 = parsed.forecast.forecastday[1].day.mintemp_c;
+        const condition_1 = parsed.forecast.forecastday[1].day.condition.text;
+        const icon_1 = parsed.forecast.forecastday[1].day.condition.icon;
+
+        const maxtemp_c_2 = parsed.forecast.forecastday[2].day.maxtemp_c;
+        const mintemp_c_2 = parsed.forecast.forecastday[2].day.mintemp_c;
+        const condition_2 = parsed.forecast.forecastday[2].day.condition.text;
+        const icon_2 = parsed.forecast.forecastday[2].day.condition.icon;
+
+        const maxtemp_c_3 = parsed.forecast.forecastday[3].day.maxtemp_c;
+        const mintemp_c_3 = parsed.forecast.forecastday[3].day.mintemp_c;
+        const condition_3 = parsed.forecast.forecastday[3].day.condition.text;
+        const icon_3 = parsed.forecast.forecastday[3].day.condition.icon;
+
+        const maxtemp_c_4 = parsed.forecast.forecastday[4].day.maxtemp_c;
+        const mintemp_c_4 = parsed.forecast.forecastday[4].day.mintemp_c;
+        const condition_4 = parsed.forecast.forecastday[4].day.condition.text;
+        const icon_4 = parsed.forecast.forecastday[4].day.condition.icon;
 
 
         res.json(
@@ -62,7 +82,23 @@ app.get("/weather", (req, res) => {
                 "maxtemp_c" : maxtemp_c,
                 "mintemp_c" : mintemp_c,
                 "maxtemp_f" : maxtemp_f,
-                "mintemp_f" : mintemp_f
+                "mintemp_f" : mintemp_f,
+                "maxtemp_c1" : maxtemp_c_1,
+                "mintemp_c1" : mintemp_c_1,
+                "condition_1" : condition_1,
+                "icon_1" : icon_1,
+                "maxtemp_c2" : maxtemp_c_2,
+                "mintemp_c2" : mintemp_c_2,
+                "condition_2" : condition_2,
+                "icon_2" : icon_2,
+                "maxtemp_c3" : maxtemp_c_3,
+                "mintemp_c3" : mintemp_c_3,
+                "condition_3" : condition_3,
+                "icon_3" : icon_3,
+                "maxtemp_c4" : maxtemp_c_4,
+                "mintemp_c4" : mintemp_c_4,
+                "condition_4" : condition_4,
+                "icon_4" : icon_4
             })
             
         
