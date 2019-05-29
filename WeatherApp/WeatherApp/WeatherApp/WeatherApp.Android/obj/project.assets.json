@@ -1327,11 +1327,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\WeatherApp.Android.csproj",
+      "projectUniqueName": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\WeatherApp.Android.csproj",
       "projectName": "WeatherApp.Android",
-      "projectPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\WeatherApp.Android.csproj",
+      "projectPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\WeatherApp.Android.csproj",
       "packagesPath": "C:\\Users\\LuísCorreia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\obj\\",
+      "outputPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.Android\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -1352,8 +1352,8 @@
       "frameworks": {
         "monoandroid81": {
           "projectReferences": {
-            "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
-              "projectPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
+            "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
+              "projectPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
             }
           }
         }

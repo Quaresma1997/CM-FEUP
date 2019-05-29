@@ -28,7 +28,7 @@
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
-        <Button Text="Add" Command="{Binding OnAddButtonClicked}" BackgroundColor="Blue"
-        CornerRadius="10"/>
+        <Button Text="Add City" Command="{Binding OnAddButtonClicked}" BackgroundColor="DeepSkyBlue"
+        CornerRadius="15" TextColor="White" HeightRequest="40" WidthRequest="200" HorizontalOptions="Center" Margin="0,20"/>
     </StackLayout>
 </ContentPage>

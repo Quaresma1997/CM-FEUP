@@ -29,3 +29,4 @@ C:\Users\LuísCorreia\Desktop\CM-FEUP\WeatherApp\WeatherApp\WeatherApp\WeatherAp
 C:\Users\LuísCorreia\Desktop\CM-FEUP\WeatherApp\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.dll
 C:\Users\LuísCorreia\Desktop\CM-FEUP\WeatherApp\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\WeatherApp.pdb
 C:\Users\LuísCorreia\Desktop\CM-FEUP\WeatherApp\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\StartPage.xaml.g.cs
+C:\Users\LuísCorreia\Documents\Repos\CM-FEUP\WeatherApp\WeatherApp\WeatherApp\WeatherApp\obj\Debug\netstandard2.0\StartPage.xaml.g.cs

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj": {}
+    "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj": {
+    "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
+        "projectUniqueName": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
         "projectName": "WeatherApp.iOS",
-        "projectPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
+        "projectPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\WeatherApp.iOS.csproj",
         "packagesPath": "C:\\Users\\LuísCorreia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\obj\\",
+        "outputPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.iOS\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
@@ -32,8 +32,8 @@
         "frameworks": {
           "xamarinios10": {
             "projectReferences": {
-              "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
-                "projectPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
+              "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
+                "projectPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
+    "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+        "projectUniqueName": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
         "projectName": "WeatherApp",
-        "projectPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
+        "projectPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp.csproj",
         "packagesPath": "C:\\Users\\LuísCorreia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LuísCorreia\\Desktop\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\obj\\",
+        "outputPath": "C:\\Users\\LuísCorreia\\Documents\\Repos\\CM-FEUP\\WeatherApp\\WeatherApp\\WeatherApp\\WeatherApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\ProgramData\\Xamarin\\NuGet\\",

@@ -28,7 +28,7 @@ namespace WeatherApp
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MyWebRequest request = new MyWebRequest("http://240d492f.ngrok.io/" + CityItem.Title , "GET");
+            MyWebRequest request = new MyWebRequest("http://2cab3fc9.ngrok.io/" + CityItem.Title , "GET");
             WeatherInfo info = JsonConvert.DeserializeObject<WeatherInfo>(request.GetResponse());
             if(info.City == "unknown" || CityItem.Title=="")
             {

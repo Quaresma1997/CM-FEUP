@@ -33,7 +33,7 @@ namespace WeatherApp
             else
             {
                 WeatherInfo info = new WeatherInfo();
-                MyWebRequest request = new MyWebRequest("http://240d492f.ngrok.io/" + City, "GET");
+                MyWebRequest request = new MyWebRequest("http://2cab3fc9.ngrok.io/" + City, "GET");
                 info = JsonConvert.DeserializeObject<WeatherInfo>(request.GetResponse());
                 info.Date1 = parseDate(info.Date1);
                 info.Date2 = parseDate(info.Date2);
